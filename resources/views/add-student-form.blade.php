@@ -30,84 +30,84 @@ fields: name, max number of students, length (in weeks), is available on sunday?
                     <h3>To Add New Student</h3>
                 </div>
                 <div class="card-body">
-                    <form action="" method="post">
+                    <form action="/students" method="post">
                         @csrf
                         <div class="row mb-3">
                             <label for="" class="col-form-label col-sm-3">First Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="" placeholder="Enter First name here" />
+                                <input type="text" class="form-control" name="first_name" id="" placeholder="Enter First name here" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="" class="col-form-label col-sm-3">Middle Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="" placeholder="Enter Middle name here" />
+                                <input type="text" class="form-control" id="" name="middle_name" placeholder="Enter Middle name here" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="" class="col-form-label col-sm-3">Last Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="" placeholder="Enter Last name here" />
+                                <input type="text" class="form-control" id="" name="last_name" placeholder="Enter Last name here" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="email" class="col-form-label col-sm-3">Email</label>
                             <div class="col-sm-9">
-                                <input type="email" class="form-control" id="email" placeholder="Enter Email here" />
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email here" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="" class="col-form-label col-sm-3">Address</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control"></textarea>
+                                <textarea class="form-control"  name="address"></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12 col-md-6 d-flex align-items-center mb-3 mb-md-0">
                                 <label class="fw-semibold me-2 inline-label">Village</label>
-                                <input type="text" class="form-control flex-grow-1" placeholder="Village">
+                                <input type="text" class="form-control flex-grow-1" name="village" placeholder="Village">
                             </div>
                             <div class="col-12 col-md-6 d-flex align-items-center">
                                 <label class="fw-semibold me-2 inline-label">Taluka</label>
-                                <input type="text" class="form-control flex-grow-1" placeholder="Taluka">
+                                <input type="text" class="form-control flex-grow-1" name="taluko" placeholder="Taluka">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12 col-md-6 d-flex align-items-center mb-3 mb-md-0">
                                 <label class="fw-semibold me-2 inline-label">District</label>
-                                <input type="text" class="form-control flex-grow-1" placeholder="District">
+                                <input type="text" class="form-control flex-grow-1" name="district" placeholder="District">
                             </div>
                             <div class="col-12 col-md-6 d-flex align-items-center">
                                 <label class="fw-semibold me-2 inline-label">Pin-code</label>
-                                <input type="text" class="form-control flex-grow-1" placeholder="Pin-code">
+                                <input type="text" class="form-control flex-grow-1" name="pin_code" placeholder="Pin-code">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="" class="col-form-label col-sm-3">Mobile Number</label>
                             <div class="col-sm-9">
-                                <input type="tel" class="form-control" id="" placeholder="Enter Mobile Number" />
+                                <input type="tel" class="form-control" id="" name="phone_number" placeholder="Enter Mobile Number" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="email" class="col-form-label col-sm-3">Parent's Email</label>
                             <div class="col-sm-9">
-                                <input type="email" class="form-control" id="email" placeholder="Enter Email here" />
+                                <input type="email" class="form-control" id="email" name="parent_email" placeholder="Enter Email here" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="" class="col-form-label col-sm-3">Paresnt's Mobile Number</label>
                             <div class="col-sm-9">
-                                <input type="tel" class="form-control" id="" placeholder="Enter Mobile Number" />
+                                <input type="tel" class="form-control" id="" name="parent_number" placeholder="Enter Mobile Number" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="batch" class="col-form-label col-sm-3">Batch</label>
                             <div class="col-sm-9">
-                                <select class="form-select" id="batch" name="batch">
+                                <select class="form-select" id="batch" name="batch_id">
                                     <option selected disabled>Select Batch</option>
-                                    <option value="morning">Morning</option>
-                                    <option value="afternoon">Afternoon</option>
-                                    <option value="evening">Evening</option>
+                                    <option value="1">Morning</option>
+                                    <option value="2">Afternoon</option>
+                                    <option value="3">Evening</option>
                                 </select>
                             </div>
                         </div>
