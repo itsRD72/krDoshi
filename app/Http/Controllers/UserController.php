@@ -2,63 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function login(Request $request)
     {
-        //
+        $credentials = $request->validate([
+            'name' => 'required',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('dashboard');
+        }
+
+        return back()->withErrors([
+            'name' => 'Invalid username or password',
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function logout(Request $request)
     {
-        //
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
+        return redirect()->route('admin.login');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function addStaff(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'role' => 'required',
+            'password' => 'required|confirmed',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $user = User::create([
+            'name' => $request->name,
+            'role' => $request->role,
+            'password' => bcrypt($request->password),
+            'created_by' => auth()->id(),
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        if($user){
+            return back()->with('success', 'Register successful!');
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
