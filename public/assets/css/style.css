@@ -17100,6 +17100,7 @@ body {
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 20px;
+  padding-bottom: 20px;
 }
 @media (max-width: 1199.98px) {
   .pc-container .pc-content.container {

@@ -7,21 +7,16 @@
       <div class="row">
         <div class="d-flex justify-content-center">
           <div class="auth-header">
-            <h2 class="text-secondary mt-2">Add Staff</h2>
+            <h2 class="text-secondary mt-2">Edit Staff</h2>
           </div>
         </div>
       </div>
       <div class="row justify-content-center">
         <div class="col-md-6">
-          @if(session('success'))
-            <div class="alert alert-success">
-              {{ session('success') }}
-            </div>
-          @endif
-          <form action="{{ route('add-staff') }}" method="post" class="mt-4">
+          <form action="{{ route('update-staff',$data->id) }}" method="post" class="mt-4">
             @csrf
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="name" name="name" placeholder="Staff Name" />
+              <input type="text" class="form-control" id="name" value="{{ old('name', $data->name) }}" name="name" placeholder="Staff Name" />
               <label for="name">Staff Name</label>
               @error('name')
                 <div class="text-danger">
@@ -30,7 +25,7 @@
               @enderror
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="role" name="role" placeholder="Staff Role" />
+              <input type="text" class="form-control" id="role" value="{{ old('name', $data->role) }}" name="role" placeholder="Staff Role" />
               <label for="role">Staff Role</label>
               @error('role')
                 <div class="text-danger">
@@ -59,7 +54,7 @@
             </div>
 
             <div class="d-grid mt-4">
-              <button type="submit" class="btn btn-secondary">SignUp</button>
+              <button type="submit" class="btn btn-secondary">Update</button>
             </div>
           </form>
         </div>

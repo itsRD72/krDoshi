@@ -31,11 +31,12 @@ class UserController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect()->route('admin.login');
     }
 
-    public function addStaff(Request $request){
+    public function addStaff(Request $request)
+    {
         $request->validate([
             'name' => 'required',
             'role' => 'required',
@@ -49,9 +50,40 @@ class UserController extends Controller
             'created_by' => auth()->id(),
         ]);
 
-        if($user){
+        if ($user) {
             return back()->with('success', 'Register successful!');
         }
+
+    }
+
+    public function staffList()
+    {
+        $data = User::all();
+
+        return view('admin.staff-list', compact('data'));
+    }
+
+    public function editStaff($id)
+    {
+        $data = User::findOrFail($id);
+        return view('admin.edit-staff', compact('data'));
+    }
+
+    public function updateStaff(Request $request, $id)
+    {
+        $data = User::findOrFail($id);
+
+        $data->name = $request->name;
+        $data->role = $request->role;
+
+        if ($request->password) {
+            $data->password = bcrypt($request->password);
+        }
+
+        $data->save();
+
+        return redirect()->route('staff-list-page')
+            ->with('success', 'Staff updated successfully!');
 
     }
 }
