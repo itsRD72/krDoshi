@@ -2,63 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use Illuminate\Http\Request;
 
 class BatchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function batch()
     {
-        //
+        return view('admin.add-batch');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function addBatch(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'start_date' => 'required',
+        ]);
+
+        $batches = Batch::create([
+            'name' => $request->name,
+            'start_date' => $request->start_date,
+            'created_by' => auth()->id(),
+        ]);
+
+        if ($batches) {
+            return back()->with('success', 'Batch Add Successful!');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function batchList()
     {
-        //
+        $data = Batch::all();
+
+        return view('admin.batch-list', compact('data'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function editBatch($id)
     {
-        //
+        $data = Batch::findOrFail($id);
+        return view('admin.edit-batch', compact('data'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function updateBatch(Request $request, $id)
     {
-        //
+        $data = Batch::findOrFail($id);
+
+        $data->name = $request->name;
+        $data->start_date = $request->start_date;
+        $data->updated_by = auth()->id();
+
+        $data->save();
+
+        return redirect()->route('batch-list')
+            ->with('success', 'Batch updated successfully!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function deleteBatch($id)
     {
-        //
-    }
+        $batch = Batch::findOrFail($id);
+        $batch->deleted_by = auth()->id();
+        $batch->save();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $batch->delete();
+
+        return redirect()->route('batch-list')
+            ->with('success', 'Batch deleted successfully!');
     }
 }

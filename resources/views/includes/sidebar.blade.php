@@ -2,7 +2,7 @@
 <nav class="pc-sidebar">
   <div class="navbar-wrapper">
     <div class="m-header">
-      <a href="../dashboard/index.html" class="b-brand text-primary">
+      <a href="{{ route('dashboard') }}" class="b-brand text-primary">
         <!-- ========   Change your logo from here   ============ -->
         <img src="../assets/images/logo-dark.svg" alt="" class="logo logo-lg" />
       </a>
@@ -22,13 +22,13 @@
           </a>
         </li>
         <li class="pc-item">
-          <a href="" class="pc-link">
+          <a href="{{ route('add-batch-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
             <span class="pc-mtext">Add Baches</span>
           </a>
         </li>
         <li class="pc-item">
-          <a href="" class="pc-link">
+          <a href="{{ route('batch-list') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
             <span class="pc-mtext">Baches</span>
           </a>

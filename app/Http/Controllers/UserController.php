@@ -51,7 +51,7 @@ class UserController extends Controller
         ]);
 
         if ($user) {
-            return back()->with('success', 'Register successful!');
+            return back()->with('success', 'Staff Added successfully!');
         }
 
     }
@@ -79,11 +79,23 @@ class UserController extends Controller
         if ($request->password) {
             $data->password = bcrypt($request->password);
         }
-
+        $data->updated_by = auth()->id();
         $data->save();
 
         return redirect()->route('staff-list-page')
             ->with('success', 'Staff updated successfully!');
 
+    }
+
+    public function deleteStaff($id)
+    {
+        $user = User::findOrFail($id);
+        $user->deleted_by = auth()->id();
+        $user->save();
+
+        $user->delete();
+
+        return redirect()->route('staff-list-page')
+            ->with('success', 'Staff deleted successfully!');
     }
 }

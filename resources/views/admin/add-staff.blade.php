@@ -59,7 +59,7 @@
             </div>
 
             <div class="d-grid mt-4">
-              <button type="submit" class="btn btn-secondary">SignUp</button>
+              <button type="submit" class="btn btn-secondary">Add Staff</button>
             </div>
           </form>
         </div>
