@@ -13,10 +13,10 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <form action="{{ route('update-staff',$data->id) }}" method="post" class="mt-4">
+          <form action="{{ route('update-staff',$user->id) }}" method="post" class="mt-4">
             @csrf
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="name" value="{{ old('name', $data->name) }}" name="name" placeholder="Staff Name" />
+              <input type="text" class="form-control" id="name" value="{{ old('name', $user->name) }}" name="name" placeholder="Staff Name" />
               <label for="name">Staff Name</label>
               @error('name')
                 <div class="text-danger">
@@ -25,7 +25,7 @@
               @enderror
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="role" value="{{ old('name', $data->role) }}" name="role" placeholder="Staff Role" />
+              <input type="text" class="form-control" id="role" value="{{ old('name', $user->role) }}" name="role" placeholder="Staff Role" />
               <label for="role">Staff Role</label>
               @error('role')
                 <div class="text-danger">

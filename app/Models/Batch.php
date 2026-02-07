@@ -19,4 +19,9 @@ class Batch extends Model
         'deleted_by',
     ];
     protected $dates = ['deleted_at'];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }

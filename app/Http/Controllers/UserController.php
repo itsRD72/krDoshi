@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class UserController extends Controller
 {
@@ -43,57 +45,85 @@ class UserController extends Controller
             'password' => 'required|confirmed',
         ]);
 
-        $user = User::create([
+        $user = DB::table('users')->insert([
             'name' => $request->name,
             'role' => $request->role,
             'password' => bcrypt($request->password),
             'created_by' => auth()->id(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         if ($user) {
             return back()->with('success', 'Staff Added successfully!');
         }
-
     }
 
     public function staffList()
     {
-        $data = User::all();
+        $users = DB::table('users')->get();
 
-        return view('admin.staff-list', compact('data'));
+        return view('admin.staff-list', compact('users'));
     }
 
     public function editStaff($id)
     {
-        $data = User::findOrFail($id);
-        return view('admin.edit-staff', compact('data'));
+        $user = DB::table('users')->where('id', $id)->first();
+
+        if (!$user) {
+            abort(404);
+        }
+        return view('admin.edit-staff', compact('user'));
     }
 
     public function updateStaff(Request $request, $id)
     {
-        $data = User::findOrFail($id);
+        $request->validate([
+            'name' => 'required',
+            'role' => 'required',
+        ]);
 
-        $data->name = $request->name;
-        $data->role = $request->role;
+
+        $user = [
+            'name' => $request->name,
+            'role' => $request->role,
+            'updated_by' => auth()->id(),
+            'updated_at' => now(),
+        ];
+
 
         if ($request->password) {
-            $data->password = bcrypt($request->password);
+            $user['password'] = bcrypt($request->password);
         }
-        $data->updated_by = auth()->id();
-        $data->save();
 
-        return redirect()->route('staff-list-page')
-            ->with('success', 'Staff updated successfully!');
+        $updated = DB::table('users')
+            ->where('id', $id)
+            ->update($data);
+
+        if ($updated) {
+            return redirect()
+                ->route('staff-list-page')
+                ->with('success', 'Staff updated successfully!');
+        }
+
+        return back()->with('error', 'Update failed!');
 
     }
 
     public function deleteStaff($id)
     {
-        $user = User::findOrFail($id);
-        $user->deleted_by = auth()->id();
-        $user->save();
+        $exists = DB::table('users')->where('id', $id)->exists();
 
-        $user->delete();
+        if (!$exists) {
+            abort(404, 'Staff not found');
+        }
+
+        DB::table('users')
+            ->where('id', $id)
+            ->update([
+                'deleted_by' => auth()->id(),
+                'deleted_at' => now(),
+            ]);
 
         return redirect()->route('staff-list-page')
             ->with('success', 'Staff deleted successfully!');

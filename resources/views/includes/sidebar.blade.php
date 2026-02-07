@@ -17,68 +17,68 @@
         </li>
         <li class="pc-item">
           <a href="{{ route('staff-list-page') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
+            <span class="pc-micon"><i class="ti ti-user"></i></i></span>
             <span class="pc-mtext">Staff Members</span>
           </a>
         </li>
         <li class="pc-item">
           <a href="{{ route('add-batch-page') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Add Baches</span>
+            <span class="pc-micon"><i class="ti ti-zoom-in"></i></span>
+            <span class="pc-mtext">Add Batch</span>
           </a>
         </li>
         <li class="pc-item">
           <a href="{{ route('batch-list') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Baches</span>
+            <span class="pc-micon"><i class="ti ti-stack"></i></i></span>
+            <span class="pc-mtext">Batch</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-zoom-in"></i></i></span>
+            <span class="pc-mtext">Add Center</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-map-pins"></i></i></span>
+            <span class="pc-mtext">Center</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('add-course-page') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-zoom-in"></i></span>
+            <span class="pc-mtext">Add Course</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('course-list-page') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-apps"></i></span>
+            <span class="pc-mtext">Course</span>
           </a>
         </li>
         <li class="pc-item">
           <a href="" class="pc-link">
             <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Add Centers</span>
+            <span class="pc-mtext">Add Student</span>
           </a>
         </li>
         <li class="pc-item">
           <a href="" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Centers</span>
+            <span class="pc-micon"><i class="ti ti-user"></i></i></span>
+            <span class="pc-mtext">Student</span>
           </a>
         </li>
         <li class="pc-item">
           <a href="" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Add Courses</span>
+            <span class="pc-micon"><i class="ti ti-plus"></i></span>
+            <span class="pc-mtext">Add MCQ</span>
           </a>
         </li>
         <li class="pc-item">
           <a href="" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Courses</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Add Students</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Students</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Add MCQs</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">MCQs</span>
+            <span class="pc-micon"><i class="ti ti-notes"></i></span>
+            <span class="pc-mtext">MCQ</span>
           </a>
         </li>
       </ul>

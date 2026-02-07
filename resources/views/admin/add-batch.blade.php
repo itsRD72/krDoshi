@@ -21,6 +21,20 @@
                     <form action="{{ route('add-batch') }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
+                            <select name="course_id" class="form-control">
+                                <option value="">-- Select Course --</option>
+                                @foreach($courses as $course)
+                                    <option value="{{ $course->id }}">
+                                        {{ $course->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('course_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Staff Name" />
                             <label for="name">Batch Name</label>
                             @error('name')

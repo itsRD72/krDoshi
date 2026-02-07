@@ -3,40 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BatchController extends Controller
 {
 
     public function batch()
     {
-        return view('admin.add-batch');
+        $courses = Course::all();
+        return view('admin.add-batch', compact('courses'));
     }
 
     public function addBatch(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'start_date' => 'required',
+            'start_date' => 'required|date',
+            'course_id' => 'required|exists:courses,id',
         ]);
 
-        $batches = Batch::create([
+        DB::table('batches')->insert([
             'name' => $request->name,
             'start_date' => $request->start_date,
+            'course_id' => $request->course_id,
             'created_by' => auth()->id(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        if ($batches) {
-            return back()->with('success', 'Batch Add Successful!');
-        }
+        return back()->with('success', 'Batch added successfully!');
     }
 
 
     public function batchList()
     {
-        $data = Batch::all();
+        $batches = DB::table('batches')
+            ->join('courses', 'batches.course_id', '=', 'courses.id')
+            ->select(
+                'batches.id',
+                'batches.name',
+                'batches.start_date',
+                'courses.name as course_name'
+            )->get();
 
-        return view('admin.batch-list', compact('data'));
+        return view('admin.batch-list', compact('batches'));
     }
 
     public function editBatch($id)
