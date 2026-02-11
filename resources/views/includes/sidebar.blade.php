@@ -34,13 +34,13 @@
           </a>
         </li>
         <li class="pc-item">
-          <a href="" class="pc-link">
+          <a href="{{ route('add-center-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-zoom-in"></i></i></span>
             <span class="pc-mtext">Add Center</span>
           </a>
         </li>
         <li class="pc-item">
-          <a href="" class="pc-link">
+          <a href="{{ route('center-list') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-map-pins"></i></i></span>
             <span class="pc-mtext">Center</span>
           </a>
@@ -58,7 +58,7 @@
           </a>
         </li>
         <li class="pc-item">
-          <a href="" class="pc-link">
+          <a href="{{ route('add-student-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
             <span class="pc-mtext">Add Student</span>
           </a>

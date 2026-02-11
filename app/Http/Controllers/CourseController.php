@@ -39,7 +39,7 @@ class CourseController extends Controller
 
     public function courseList()
     {
-        $courses = DB::table('courses')->get();
+       $courses = DB::table('courses')->get();
 
         return view('admin.course-list', compact('courses'));
     }
@@ -92,7 +92,12 @@ class CourseController extends Controller
             abort(404, 'Course not found');
         }
 
-        DB::table('courses')->where('id', $id)->delete();
+        DB::table('courses')
+            ->where('id', $id)
+            ->update([
+                'deleted_by' => auth()->id(),
+                'deleted_at' => now(),
+            ]);
 
         return redirect()->route('course-list-page')
             ->with('success', 'Staff deleted successfully!');

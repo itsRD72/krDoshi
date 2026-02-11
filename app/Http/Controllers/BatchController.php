@@ -12,7 +12,7 @@ class BatchController extends Controller
 
     public function batch()
     {
-        $courses = Course::all();
+        $courses = DB::table('courses')->get();
         return view('admin.add-batch', compact('courses'));
     }
 
@@ -41,6 +41,7 @@ class BatchController extends Controller
     {
         $batches = DB::table('batches')
             ->join('courses', 'batches.course_id', '=', 'courses.id')
+            ->whereNull('batches.deleted_at')
             ->select(
                 'batches.id',
                 'batches.name',
@@ -73,11 +74,18 @@ class BatchController extends Controller
 
     public function deleteBatch($id)
     {
-        $batch = Batch::findOrFail($id);
-        $batch->deleted_by = auth()->id();
-        $batch->save();
+        $batch = DB::table('batches')->where('id', $id)->exists();
 
-        $batch->delete();
+        if (!$batch) {
+            abort(404, 'Batch not found');
+        }
+
+        DB::table('batches')
+            ->where('id', $id)
+            ->update([
+                'deleted_by' => auth()->id(),
+                'deleted_at' => now(),
+            ]);
 
         return redirect()->route('batch-list')
             ->with('success', 'Batch deleted successfully!');

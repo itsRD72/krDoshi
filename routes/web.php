@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\BatchController;
+use App\Http\Controllers\CenterController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +45,23 @@ Route::get('/admin/batch-list', [BatchController::class, 'batchList'])->name('ba
 Route::get('/admin/editBatch/{id}', [BatchController::class, 'editBatch'])->name('editbatch-form');
 Route::post('/updateBatch/{id}', [BatchController::class, 'updateBatch'])->name('update-batch');
 Route::get('admin/deleteBatch/{id}', [BatchController::class, 'deleteBatch'])->name('delete-batch');
+
+
+Route::view('/admin/center', 'admin.add-center')->name('add-center-page');
+Route::post('/admin/addCenter', [CenterController::class, 'addCenter'])->name('add-center');
+
+Route::get('/admin/center-list', [CenterController::class, 'centerList'])->name('center-list');
+
+Route::get('/admin/editCenter/{id}', [CenterController::class, 'editCenter'])->name('editcenter-form');
+Route::post('/updateCenter/{id}', [CenterController::class, 'updateCenter'])->name('update-center');
+Route::get('admin/deleteCenter/{id}', [CenterController::class, 'deleteCenter'])->name('delete-center');
+
+
+Route::get('/admin/student', [StudentController::class, 'student'])
+    ->name('add-student-page');
+
+Route::post('/admin/student', [StudentController::class, 'addStudent'])
+    ->name('add-student');
+
+// Route::view('/admin/student-list', 'admin.student-list')->name('student-list-page');
+// Route::get('/admin/student-list', [StudentController::class, 'studentList'])->name('student-list');

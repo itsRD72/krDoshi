@@ -61,7 +61,9 @@ class UserController extends Controller
 
     public function staffList()
     {
-        $users = DB::table('users')->get();
+        $users = DB::table('users')
+            ->whereNull('deleted_at')
+            ->get();
 
         return view('admin.staff-list', compact('users'));
     }

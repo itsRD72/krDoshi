@@ -16724,31 +16724,6 @@ pre[class*=language-] > code {
   margin-right: 10px;
   border-radius: 50%;
 }
-.pc-header .header-user-profile .pc-head-link {
-  height: 48px;
-  width: 92px;
-  border-radius: 50px;
-}
-.pc-header .header-user-profile .pc-head-link > span > i {
-  font-size: 22px;
-  margin-right: 8px;
-}
-.pc-header .header-user-profile .pc-head-link .user-avtar {
-  width: 34px;
-  transition: all 0.08s cubic-bezier(0.37, 0.24, 0.53, 0.99);
-}
-@media (max-width: 575.98px) {
-  .pc-header .header-user-profile .pc-head-link {
-    width: 48px;
-  }
-  .pc-header .header-user-profile .pc-head-link .user-avtar {
-    margin-right: 0;
-  }
-  .pc-header .header-user-profile .pc-head-link > span,
-  .pc-header .header-user-profile .pc-head-link > span > i {
-    display: none;
-  }
-}
 .pc-header .dropdown-user-profile {
   min-width: 330px;
   max-width: 100%;
