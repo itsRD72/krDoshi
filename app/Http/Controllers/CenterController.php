@@ -104,6 +104,15 @@ class CenterController extends Controller
         return back()->with('error', 'Update failed!');
     }
 
+    public function viewCenter($id)
+    {
+        $center = DB::table('centers')
+            ->whereNull('deleted_at')   // if using soft delete manually
+            ->first();
+
+        return view('admin.center-view', compact('center'));
+    }
+
     public function deleteCenter($id)
     {
         $center = DB::table('centers')->where('id', $id)->exists();

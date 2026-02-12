@@ -54,19 +54,36 @@ class BatchController extends Controller
 
     public function editBatch($id)
     {
-        $data = Batch::findOrFail($id);
-        return view('admin.edit-batch', compact('data'));
+        $batch = DB::table('batches')
+            ->where('id', $id)
+            ->whereNull('deleted_at')
+            ->first();
+        if (!$batch) {
+            abort(404);
+        }
+        $courses = DB::table('courses')->get();
+        return view('admin.edit-batch', compact('batch', 'courses'));
     }
 
     public function updateBatch(Request $request, $id)
     {
-        $data = Batch::findOrFail($id);
+        $exists = DB::table('batches')
+            ->where('id', $id)
+            ->whereNull('deleted_at')
+            ->exists();
 
-        $data->name = $request->name;
-        $data->start_date = $request->start_date;
-        $data->updated_by = auth()->id();
+        if (!$exists) {
+            abort(404, 'Batch not found');
+        }
 
-        $data->save();
+        DB::table('batches')
+            ->where('id', $id)
+            ->update([
+                'name' => $request->name,
+                'start_date' => $request->start_date,
+                'updated_by' => auth()->id(),
+                'updated_at' => now(),
+            ]);
 
         return redirect()->route('batch-list')
             ->with('success', 'Batch updated successfully!');

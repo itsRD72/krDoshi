@@ -14,7 +14,6 @@
         <table class="table table-bordered table-striped w-75 mx-auto text-center shadow-sm rounded-4">
             <thead class="table-secondary">
                 <tr>
-                    <th class="fw-bold">Staff Id</th>
                     <th class="fw-bold">Staff Name</th>
                     <th class="fw-bold">Staff Role</th>
                     <th class="fw-bold">Action</th>
@@ -23,7 +22,6 @@
             <tbody>
                 @foreach($users as $item)
                     <tr>
-                        <td>{{ $item->id }}</td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->role }}</td>
                         <td>

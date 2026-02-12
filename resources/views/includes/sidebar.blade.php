@@ -30,7 +30,7 @@
         <li class="pc-item">
           <a href="{{ route('batch-list') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-stack"></i></i></span>
-            <span class="pc-mtext">Batch</span>
+            <span class="pc-mtext">Batches</span>
           </a>
         </li>
         <li class="pc-item">
@@ -42,7 +42,7 @@
         <li class="pc-item">
           <a href="{{ route('center-list') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-map-pins"></i></i></span>
-            <span class="pc-mtext">Center</span>
+            <span class="pc-mtext">Centers</span>
           </a>
         </li>
         <li class="pc-item">
@@ -54,7 +54,7 @@
         <li class="pc-item">
           <a href="{{ route('course-list-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-apps"></i></span>
-            <span class="pc-mtext">Course</span>
+            <span class="pc-mtext">Courses</span>
           </a>
         </li>
         <li class="pc-item">
@@ -64,21 +64,21 @@
           </a>
         </li>
         <li class="pc-item">
-          <a href="" class="pc-link">
+          <a href="{{ route('student-list-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-user"></i></i></span>
-            <span class="pc-mtext">Student</span>
+            <span class="pc-mtext">Students</span>
           </a>
         </li>
         <li class="pc-item">
-          <a href="" class="pc-link">
+          <a href="{{ route('add-mcq-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-plus"></i></span>
             <span class="pc-mtext">Add MCQ</span>
           </a>
         </li>
         <li class="pc-item">
-          <a href="" class="pc-link">
+          <a href="{{ route('mcq-list-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-notes"></i></span>
-            <span class="pc-mtext">MCQ</span>
+            <span class="pc-mtext">MCQs</span>
           </a>
         </li>
       </ul>

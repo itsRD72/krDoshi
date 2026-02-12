@@ -14,7 +14,6 @@
         <table class="table table-bordered table-striped w-75 mx-auto text-center shadow-sm rounded-4">
             <thead class="table-secondary">
                 <tr>
-                    <th class="fw-bold">Course Id</th>
                     <th class="fw-bold">Course Name</th>
                     <th class="fw-bold">Max Student</th>
                     <th class="fw-bold">Length(in week)</th>
@@ -25,7 +24,6 @@
             <tbody>
                 @foreach($courses as $item)
                     <tr>
-                        <td>{{ $item->id }}</td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->max_student }}</td>
                         <td>{{ $item->length_in_week }}</td>

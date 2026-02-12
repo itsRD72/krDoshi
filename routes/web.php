@@ -4,6 +4,7 @@ use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\McqController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,8 @@ Route::get('/admin/center-list', [CenterController::class, 'centerList'])->name(
 
 Route::get('/admin/editCenter/{id}', [CenterController::class, 'editCenter'])->name('editcenter-form');
 Route::post('/updateCenter/{id}', [CenterController::class, 'updateCenter'])->name('update-center');
+Route::get('admin/centertview/{id}', [CenterController::class, 'viewCenter'])
+    ->name('view-center');
 Route::get('admin/deleteCenter/{id}', [CenterController::class, 'deleteCenter'])->name('delete-center');
 
 
@@ -63,5 +66,24 @@ Route::get('/admin/student', [StudentController::class, 'student'])
 Route::post('/admin/student', [StudentController::class, 'addStudent'])
     ->name('add-student');
 
-// Route::view('/admin/student-list', 'admin.student-list')->name('student-list-page');
-// Route::get('/admin/student-list', [StudentController::class, 'studentList'])->name('student-list');
+Route::get('/admin/get-batches/{courseId}', [StudentController::class, 'getBatches']);
+
+Route::get('/admin/student-list', [StudentController::class, 'studentList'])->name('student-list-page');
+
+
+Route::get('/admin/editStudent/{id}', [StudentController::class, 'editStudent'])->name('editstudent-form');
+Route::post('/updateStudent/{id}', [StudentController::class, 'updateStudent'])->name('update-student');
+Route::get('admin/studentview/{id}', [StudentController::class, 'viewStudent'])
+    ->name('view-student');
+Route::get('admin/deleteStudent/{id}', [StudentController::class, 'deleteStudent'])->name('delete-student');
+
+
+
+Route::get('/admin/mcq', [McqController::class, 'mcq'])->name('add-mcq-page');
+Route::post('/admin/addMcq', [McqController::class, 'addMcq'])->name('add-mcq');
+
+Route::get('/admin/mcq-list', [McqController::class, 'mcqList'])->name('mcq-list-page');
+
+Route::get('/admin/editMcq/{id}', [McqController::class, 'editMcq'])->name('editmcq-form');
+Route::post('/updateMcq/{id}', [McqController::class, 'updateMcq'])->name('update-mcq');
+Route::get('admin/deleteMcq/{id}', [McqController::class, 'deleteMcq'])->name('delete-mcq');

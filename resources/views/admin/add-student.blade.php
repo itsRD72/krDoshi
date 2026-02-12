@@ -20,6 +20,23 @@
                     @endif
                     <form action="{{ route('add-student') }}" method="post" class="mt-4">
                         @csrf
+
+                        <div class="form-floating mb-3">
+                            <select id="course_id" name="course_id" class="form-select">
+                                <option value="" disabled selected>-- Select Course --</option>
+                                @foreach($courses as $course)
+                                    <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                                        {{ $course->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <label for="batch_id">Select Course</label>
+
+                            @error('course_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="form-floating mb-3">
                             <select id="batch_id" name="batch_id" class="form-select">
                                 <option value="" disabled selected>-- Select Batch --</option>
@@ -144,7 +161,7 @@
                         </div>
 
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-secondary">Add Center</button>
+                            <button type="submit" class="btn btn-secondary">Add Student</button>
                         </div>
                     </form>
                 </div>
@@ -157,4 +174,44 @@
 @section('scripts')
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            function loadBatches(courseId, selectedBatch = null) {
+                var batchDropdown = $('#batch_id');
+                batchDropdown.html('<option value="">-- Select Batch --</option>');
+
+                if (courseId) {
+                    $.ajax({
+                        url: '/admin/get-batches/' + courseId,
+                        type: 'GET',
+                        success: function (data) {
+                            data.forEach(function (batch) {
+                                var selected = (selectedBatch == batch.id) ? 'selected' : '';
+                                batchDropdown.append(
+                                    '<option value="' + batch.id + '" ' + selected + '>' + batch.name + '</option>'
+                                );
+                            });
+                        },
+                        error: function () {
+                            alert('Failed to fetch batches!');
+                        }
+                    });
+                }
+            }
+
+            // Load batches on course change
+            $('#course_id').change(function () {
+                loadBatches($(this).val());
+            });
+
+            // Preload batches if old values exist (after validation error)
+            var oldCourse = '{{ old('course_id') }}';
+            var oldBatch = '{{ old('batch_id') }}';
+            if (oldCourse) {
+                loadBatches(oldCourse, oldBatch);
+            }
+        });
+    </script>
+
 @endsection

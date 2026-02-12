@@ -21,4 +21,9 @@ class Course extends Model
     {
         return $this->hasMany(Batch::class);
     }
+
+    public function mcqs()
+    {
+        return $this->hasMany(Mcq::class);
+    }
 }

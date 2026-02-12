@@ -18,10 +18,26 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('update-batch',$data->id) }}" method="post" class="mt-4">
+                    <form action="{{ route('update-batch', $batch->id) }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="name" value="{{ old('name', $data->name) }}" name="name" placeholder="Staff Name" />
+                            <select name="course_id" class="form-control">
+                                <option value="">-- Select Course --</option>
+
+                                @foreach($courses as $course)
+                                    <option value="{{ $course->id }}" {{ old('course_id', $batch->course_id) == $course->id ? 'selected' : '' }}>
+                                        {{ $course->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('course_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="name" value="{{ old('name', $batch->name) }}"
+                                name="name" placeholder="Staff Name" />
                             <label for="name">Batch Name</label>
                             @error('name')
                                 <div class="text-danger">
@@ -30,7 +46,8 @@
                             @enderror
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="startdate" value="{{ old('start_date', $data->start_date) }}" name="start_date"
+                            <input type="date" class="form-control" id="startdate"
+                                value="{{ old('start_date', $batch->start_date) }}" name="start_date"
                                 placeholder="Start Date" />
                             <label for="startdate">Start Date</label>
                             @error('start_date')
