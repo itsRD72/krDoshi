@@ -23,35 +23,37 @@
 
                         <div class="form-floating mb-3">
                             <select id="course_id" name="course_id" class="form-select">
-                                <option value="" disabled selected>-- Select Course --</option>
+                                <option value="" disabled {{ old('course_id') ? '' : 'selected' }}>
+                                    -- Select Course --
+                                </option>
+
                                 @foreach($courses as $course)
                                     <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
                                         {{ $course->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            <label for="batch_id">Select Course</label>
+
+                            <label for="course_id">Select Course</label>
 
                             @error('course_id')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="form-floating mb-3">
                             <select id="batch_id" name="batch_id" class="form-select">
-                                <option value="" disabled selected>-- Select Batch --</option>
-                                @foreach($batches as $batch)
-                                    <option value="{{ $batch->id }}" {{ old('batch_id') == $batch->id ? 'selected' : '' }}>
-                                        {{ $batch->name }}
-                                    </option>
-                                @endforeach
+                                <option value="" disabled selected>
+                                    -- Select Batch --
+                                </option>
                             </select>
+
                             <label for="batch_id">Select Batch</label>
 
                             @error('batch_id')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="first_name" name="first_name"
                                 placeholder="First Name" />
@@ -176,40 +178,28 @@
     <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script>
 
     <script>
-        $(document).ready(function () {
-            function loadBatches(courseId, selectedBatch = null) {
-                var batchDropdown = $('#batch_id');
-                batchDropdown.html('<option value="">-- Select Batch --</option>');
+        document.getElementById('course_id').addEventListener('change', function () {
 
-                if (courseId) {
-                    $.ajax({
-                        url: '/admin/get-batches/' + courseId,
-                        type: 'GET',
-                        success: function (data) {
-                            data.forEach(function (batch) {
-                                var selected = (selectedBatch == batch.id) ? 'selected' : '';
-                                batchDropdown.append(
-                                    '<option value="' + batch.id + '" ' + selected + '>' + batch.name + '</option>'
-                                );
-                            });
-                        },
-                        error: function () {
-                            alert('Failed to fetch batches!');
-                        }
-                    });
-                }
-            }
+            let courseId = this.value;
+            let batchDropdown = document.getElementById('batch_id');
 
-            // Load batches on course change
-            $('#course_id').change(function () {
-                loadBatches($(this).val());
-            });
+            // reset batch dropdown
+            batchDropdown.innerHTML = '<option value="">-- Select Batch --</option>';
 
-            // Preload batches if old values exist (after validation error)
-            var oldCourse = '{{ old('course_id') }}';
-            var oldBatch = '{{ old('batch_id') }}';
-            if (oldCourse) {
-                loadBatches(oldCourse, oldBatch);
+            if (courseId) {
+                fetch('/get-batches/' + courseId)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        data.forEach(function (batch) {
+                            let option = document.createElement('option');
+                            option.value = batch.id;
+                            option.text = batch.name;
+                            batchDropdown.appendChild(option);
+                        });
+
+                    })
+                    .catch(error => console.error('Error:', error));
             }
         });
     </script>

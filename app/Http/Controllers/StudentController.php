@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Batch;
 use App\Models\Student;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,14 +23,10 @@ class StudentController extends Controller
         return view('admin.add-student', compact('courses', 'batches'));
     }
 
-    public function getBatches($courseId)
+    public function create()
     {
-        $batches = DB::table('batches')
-            ->where('course_id', $courseId)
-            ->whereNull('deleted_at')
-            ->get();
-
-        return response()->json($batches);
+        $courses = Course::all();
+        return view('admin.add-student', compact('courses'));
     }
 
     public function addStudent(Request $request)

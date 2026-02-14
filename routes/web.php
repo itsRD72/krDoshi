@@ -4,6 +4,7 @@ use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\McqController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
@@ -66,7 +67,9 @@ Route::get('/admin/student', [StudentController::class, 'student'])
 Route::post('/admin/student', [StudentController::class, 'addStudent'])
     ->name('add-student');
 
-Route::get('/admin/get-batches/{courseId}', [StudentController::class, 'getBatches']);
+Route::get('/get-batches/{course}', [BatchController::class, 'getBatches']);
+Route::get('/admin/create', [StudentController::class, 'create'])
+    ->name('admin.create');
 
 Route::get('/admin/student-list', [StudentController::class, 'studentList'])->name('student-list-page');
 
@@ -87,3 +90,12 @@ Route::get('/admin/mcq-list', [McqController::class, 'mcqList'])->name('mcq-list
 Route::get('/admin/editMcq/{id}', [McqController::class, 'editMcq'])->name('editmcq-form');
 Route::post('/updateMcq/{id}', [McqController::class, 'updateMcq'])->name('update-mcq');
 Route::get('admin/deleteMcq/{id}', [McqController::class, 'deleteMcq'])->name('delete-mcq');
+
+
+
+Route::get('/admin/exam-setup', [ExamController::class, 'setup'])
+    ->name('exam-setup');
+Route::get('/admin/select-questions', [ExamController::class, 'selectQuestions'])
+    ->name('exam-select');
+Route::post('/admin/exam-print', [ExamController::class, 'printPaper'])
+    ->name('exam-print');

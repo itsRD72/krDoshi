@@ -80,8 +80,13 @@
                             @enderror
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="correct_option" name="correct_option" placeholder="Correct Answer" />
-                            <label for="correct_option">Correct Answer</label>
+                            <select name="correct_option" class="form-control">
+                                <option value="">-- Correct Answer --</option>
+                                <option value="A">Option A</option>
+                                <option value="B">Option B</option>
+                                <option value="C">Option C</option>
+                                <option value="D">Option D</option>
+                            </select>
                             @error('correct_option')
                                 <div class="text-danger">
                                     {{$message}}

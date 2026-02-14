@@ -13,20 +13,6 @@
             <i class="ti ti-menu-2"></i>
           </a>
         </li>
-        <li class="dropdown pc-h-item d-inline-flex d-md-none">
-          <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none m-0" data-bs-toggle="dropdown" href="#"
-            role="button" aria-haspopup="false" aria-expanded="false">
-            <i class="ti ti-search"></i>
-          </a>
-          <div class="dropdown-menu pc-h-dropdown drp-search">
-            <form class="px-3">
-              <div class="mb-0 d-flex align-items-center">
-                <i data-feather="search"></i>
-                <input type="search" class="form-control border-0 shadow-none" placeholder="Search here. . ." />
-              </div>
-            </form>
-          </div>
-        </li>
       </ul>
     </div>
     <!-- [Mobile Media Block end] -->
@@ -37,7 +23,7 @@
         <li class="dropdown pc-h-item header-user-profile">
           <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
             role="button" aria-haspopup="false" aria-expanded="false">
-              <i class="ti ti-settings"></i>
+            <i class="ti ti-settings"></i>
           </a>
           <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
             <div class="dropdown-header">

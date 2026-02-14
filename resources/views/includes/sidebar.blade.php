@@ -22,18 +22,6 @@
           </a>
         </li>
         <li class="pc-item">
-          <a href="{{ route('add-batch-page') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-zoom-in"></i></span>
-            <span class="pc-mtext">Add Batch</span>
-          </a>
-        </li>
-        <li class="pc-item">
-          <a href="{{ route('batch-list') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-stack"></i></i></span>
-            <span class="pc-mtext">Batches</span>
-          </a>
-        </li>
-        <li class="pc-item">
           <a href="{{ route('add-center-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-zoom-in"></i></i></span>
             <span class="pc-mtext">Add Center</span>
@@ -47,7 +35,7 @@
         </li>
         <li class="pc-item">
           <a href="{{ route('add-course-page') }}" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-zoom-in"></i></span>
+            <span class="pc-micon"><i class="ti ti-plus"></i></span>
             <span class="pc-mtext">Add Course</span>
           </a>
         </li>
@@ -55,6 +43,18 @@
           <a href="{{ route('course-list-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-apps"></i></span>
             <span class="pc-mtext">Courses</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('add-batch-page') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-plus"></i></span>
+            <span class="pc-mtext">Add Batch</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('batch-list') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-stack"></i></i></span>
+            <span class="pc-mtext">Batches</span>
           </a>
         </li>
         <li class="pc-item">
@@ -79,6 +79,12 @@
           <a href="{{ route('mcq-list-page') }}" class="pc-link">
             <span class="pc-micon"><i class="ti ti-notes"></i></span>
             <span class="pc-mtext">MCQs</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="{{ route('exam-setup') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-notes"></i></span>
+            <span class="pc-mtext">Exam Setup</span>
           </a>
         </li>
       </ul>

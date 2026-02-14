@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="d-flex justify-content-center">
                     <div class="auth-header">
-                        <h2 class="text-secondary mt-2">Add Student</h2>
+                        <h2 class="text-secondary mt-2">Update Student</h2>
                     </div>
                 </div>
             </div>

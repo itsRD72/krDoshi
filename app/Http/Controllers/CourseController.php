@@ -32,7 +32,7 @@ class CourseController extends Controller
         ]);
 
         if ($course) {
-            return back()->with('success', 'Staff Added successfully!');
+            return back()->with('success', 'Course Added successfully!');
         }
         return back()->with('error', 'Something went wrong!');
     }
@@ -100,6 +100,6 @@ class CourseController extends Controller
             ]);
 
         return redirect()->route('course-list-page')
-            ->with('success', 'Staff deleted successfully!');
+            ->with('success', 'Course deleted successfully!');
     }
 }

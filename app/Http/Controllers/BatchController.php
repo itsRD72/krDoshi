@@ -107,4 +107,12 @@ class BatchController extends Controller
         return redirect()->route('batch-list')
             ->with('success', 'Batch deleted successfully!');
     }
+
+
+    public function getBatches($courseId)
+    {
+        $batches = Batch::where('course_id', $courseId)->get();
+        return response()->json($batches);
+    }
+
 }
