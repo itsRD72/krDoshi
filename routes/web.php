@@ -63,5 +63,10 @@ Route::get('/admin/student', [StudentController::class, 'student'])
 Route::post('/admin/student', [StudentController::class, 'addStudent'])
     ->name('add-student');
 
-// Route::view('/admin/student-list', 'admin.student-list')->name('student-list-page');
-// Route::get('/admin/student-list', [StudentController::class, 'studentList'])->name('student-list');
+
+Route::get('/admin/student-list', [StudentController::class, 'studentList'])->name('student-list-page');
+Route::get('admin/studentview/{id}',[StudentController::class,'viewStudent'])->name('view-student');
+
+Route::get('/admin/editStudent/{id}', [StudentController::class, 'editStudent'])->name('editstudent-form');
+Route::post('/updateStudent/{id}', [StudentController::class, 'updateStudent'])->name('update-student');
+Route::get('admin/deleteStudent/{id}', [StudentController::class, 'deleteStudent'])->name('delete-student');

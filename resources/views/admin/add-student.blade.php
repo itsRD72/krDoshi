@@ -21,6 +21,21 @@
                     <form action="{{ route('add-student') }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
+                            <select id="course_id" name="course_id" class="form-select">
+                                <option value="" disabled selected>-- Course --</option>
+                                @foreach($courses as $course)
+                                    <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                                        {{ $course->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <label for="batch_id">Select Batch</label>
+
+                            @error('batch_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-floating mb-3">
                             <select id="batch_id" name="batch_id" class="form-select">
                                 <option value="" disabled selected>-- Select Batch --</option>
                                 @foreach($batches as $batch)

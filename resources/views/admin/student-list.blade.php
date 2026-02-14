@@ -14,19 +14,26 @@
         <table class="table table-bordered table-striped w-75 mx-auto text-center shadow-sm rounded-4">
             <thead class="table-secondary">
                 <tr>
-                    <th class="fw-bold">Studnet Id</th>
-                    <th class="fw-bold"> Name</th>
-                    <th class="fw-bold">Staff Role</th>
+                    <th class="fw-bold">Course</th>
+                    <th class="fw-bold">Batch</th>
+                    <th class="fw-bold">Student Name</th>
+                    <th class="fw-bold">Email</th>
+                    <th class="fw-bold">Phone Number</th>
                     <th class="fw-bold">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($users as $item)
+                @foreach($students as $item)
                     <tr>
-                        <td>{{ $item->id }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->role }}</td>
+                        <td>{{ $item->course_name }}</td>
+                        <td>{{ $item->batch_name }}</td>
+                        <td>{{ $item->first_name . ' ' . $item->last_name }}</td>
+                        <td>{{ $item->email }}</td>
+                        <td>{{ $item->phone_number }}</td>
                         <td>
+                        <a href="{{ route('view-student', $item->id) }}" class="text-primary me-3">
+                                <i class="ti ti-eye fs-4"></i>
+                            </a>
                             <a href="{{ route('editstudent-form', $item->id) }}" class="text-primary me-3">
                                 <i class="ti ti-pencil fs-4"></i>
                             </a>
