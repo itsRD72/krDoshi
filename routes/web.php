@@ -68,6 +68,8 @@ Route::post('/admin/student', [StudentController::class, 'addStudent'])
     ->name('add-student');
 
 Route::get('/get-batches/{course}', [BatchController::class, 'getBatches']);
+Route::get('/get-courses/{centerId}', [BatchController::class, 'getCourses']);
+
 Route::get('/admin/create', [StudentController::class, 'create'])
     ->name('admin.create');
 

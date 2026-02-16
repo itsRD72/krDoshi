@@ -17,6 +17,7 @@
                     <th class="fw-bold">Course Name</th>
                     <th class="fw-bold">Max Student</th>
                     <th class="fw-bold">Length(in week)</th>
+                    <th class="fw-bold">Running Batches</th>
                     <th class="fw-bold">Available on Sunday</th>
                     <th class="fw-bold">Action</th>
                 </tr>
@@ -27,6 +28,8 @@
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->max_student }}</td>
                         <td>{{ $item->length_in_week }}</td>
+                        <td>{{ $item->running_batches }}</td>
+
                         <td>
                             @if($item->is_avail_sunday)
                                 <span class="badge bg-success">Yes</span>
@@ -41,7 +44,7 @@
 
                             <a href="{{ route('delete-course', $item->id) }}"
                                 onclick="return confirm('Are you sure you want to permanently delete this course?')"
-                                 class="text-danger">
+                                class="text-danger">
                                 <i class="ti ti-trash fs-4"></i>
                             </a>
                         </td>

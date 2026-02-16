@@ -17,6 +17,7 @@
                     <th class="fw-bold">Course Name</th>
                     <th class="fw-bold">Batch Name</th>
                     <th class="fw-bold">Start Date</th>
+                    <th class="fw-bold">Total Students</th>
                     <th class="fw-bold">Action</th>
                 </tr>
             </thead>
@@ -26,6 +27,7 @@
                         <td>{{ $item->course_name }}</td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->start_date }}</td>
+                        <td>{{ $item->total_students }}</td>
                         <td>
                             <a href="{{ route('editbatch-form', $item->id) }}" class="text-primary me-3">
                                 <i class="ti ti-pencil fs-4"></i>

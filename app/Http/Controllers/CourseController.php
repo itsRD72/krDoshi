@@ -39,10 +39,36 @@ class CourseController extends Controller
 
     public function courseList()
     {
-       $courses = DB::table('courses')->get();
+        $courses = DB::table('courses')
+            ->leftJoin('batches', function ($join) {
+                $join->on('courses.id', '=', 'batches.course_id')
+                    ->whereNull('batches.deleted_at')
+                    ->whereDate('batches.start_date', '<=', now())
+                    ->whereRaw(
+                        "DATE_ADD(batches.start_date, INTERVAL courses.length_in_week * 7 DAY) >= ?",
+                        [now()]
+                    );
+            })
+            ->select(
+                'courses.id',
+                'courses.name',
+                'courses.max_student',
+                'courses.length_in_week',
+                'courses.is_avail_sunday',
+                DB::raw('COUNT(batches.id) as running_batches')
+            )
+            ->groupBy(
+                'courses.id',
+                'courses.name',
+                'courses.max_student',
+                'courses.length_in_week',
+                'courses.is_avail_sunday'
+            )
+            ->get();
 
         return view('admin.course-list', compact('courses'));
     }
+
 
     public function editCourse($id)
     {

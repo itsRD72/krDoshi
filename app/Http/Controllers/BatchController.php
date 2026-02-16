@@ -12,7 +12,7 @@ class BatchController extends Controller
 
     public function batch()
     {
-        $courses = DB::table('courses')->get();
+         $courses = DB::table('courses')->get();
         return view('admin.add-batch', compact('courses'));
     }
 
@@ -41,16 +41,29 @@ class BatchController extends Controller
     {
         $batches = DB::table('batches')
             ->join('courses', 'batches.course_id', '=', 'courses.id')
+            ->leftJoin('students', function ($join) {
+                $join->on('batches.id', '=', 'students.batch_id')
+                    ->whereNull('students.deleted_at'); // if soft delete used
+            })
             ->whereNull('batches.deleted_at')
             ->select(
                 'batches.id',
                 'batches.name',
                 'batches.start_date',
-                'courses.name as course_name'
-            )->get();
+                'courses.name as course_name',
+                DB::raw('COUNT(students.id) as total_students')
+            )
+            ->groupBy(
+                'batches.id',
+                'batches.name',
+                'batches.start_date',
+                'courses.name'
+            )
+            ->get();
 
         return view('admin.batch-list', compact('batches'));
     }
+
 
     public function editBatch($id)
     {
@@ -114,5 +127,4 @@ class BatchController extends Controller
         $batches = Batch::where('course_id', $courseId)->get();
         return response()->json($batches);
     }
-
 }
