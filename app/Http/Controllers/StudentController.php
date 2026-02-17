@@ -152,12 +152,14 @@ class StudentController extends Controller
         $student = DB::table('students')
             ->join('batches', 'students.batch_id', '=', 'batches.id')
             ->join('courses', 'batches.course_id', '=', 'courses.id')
+            ->join('centers', 'batches.center_id', '=', 'centers.id')
             ->where('students.id', $id)
             ->whereNull('students.deleted_at')
             ->select(
                 'students.*',
                 'courses.name as course_name',
-                'batches.name as batch_name'
+                'batches.name as batch_name',
+                'centers.name as center_name'
             )
             ->first();
 

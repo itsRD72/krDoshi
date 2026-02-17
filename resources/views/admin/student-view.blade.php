@@ -24,6 +24,11 @@
                 </div>
 
                 <div class="mb-3">
+                    <strong>Center:</strong>
+                    {{ $student->center_name }}
+                </div>
+
+                <div class="mb-3">
                     <strong>Course:</strong>
                     {{ $student->course_name }}
                 </div>

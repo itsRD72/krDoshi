@@ -29,7 +29,7 @@ Route::get('/admin/editStaff/{id}', [UserController::class, 'editStaff'])->name(
 Route::post('/updateStaff/{id}', [UserController::class, 'updateStaff'])->name('update-staff');
 Route::get('admin/deleteStaff/{id}', [UserController::class, 'deleteStaff'])->name('delete-staff');
 
-Route::view('/admin/add-course', 'admin.add-course')->name('add-course-page');
+Route::get('/admin/add-course', [CourseController::class, 'course'])->name('add-course-page');
 Route::post('add-course', [CourseController::class, 'addCourse'])->name('add-course');
 Route::get('/courses', [CourseController::class, 'courseList'])->name('course-list-page');
 
@@ -40,8 +40,6 @@ Route::get('admin/deleteCourse/{id}', [CourseController::class, 'deleteCourse'])
 Route::get('/admin/batch', [BatchController::class, 'batch'])->name('add-batch-page');
 Route::post('/admin/addBatch', [BatchController::class, 'addBatch'])->name('add-batch');
 
-
-Route::view('/admin/batch-list', 'admin.batch-list')->name('batch-list-page');
 Route::get('/admin/batch-list', [BatchController::class, 'batchList'])->name('batch-list');
 
 Route::get('/admin/editBatch/{id}', [BatchController::class, 'editBatch'])->name('editbatch-form');
@@ -66,9 +64,9 @@ Route::get('/admin/student', [StudentController::class, 'student'])
 
 Route::post('/admin/student', [StudentController::class, 'addStudent'])
     ->name('add-student');
-
-Route::get('/get-batches/{course}', [BatchController::class, 'getBatches']);
-Route::get('/get-courses/{centerId}', [BatchController::class, 'getCourses']);
+Route::get('/get-batches/{courseId}', [BatchController::class, 'getBatches'])
+->name('get-batches');
+Route::get('/get-courses/{centerId}', [BatchController::class, 'getCourses'])->name('get-courses');
 
 Route::get('/admin/create', [StudentController::class, 'create'])
     ->name('admin.create');

@@ -21,6 +21,25 @@
                     <form action="{{ route('add-course') }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
+                            <select id="center_id" name="center_id" class="form-select">
+                                <option value="" disabled {{ old('center_id') ? '' : 'selected' }}>
+                                    -- Select Center --
+                                </option>
+
+                                @foreach($centers as $center)
+                                    <option value="{{ $center->id }}" {{ old('center_id') == $center->id ? 'selected' : '' }}>
+                                        {{ $center->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <label for="center_id">Select Center</label>
+
+                            @error('center_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Course Name" />
                             <label for="name">Course Name</label>
                             @error('name')

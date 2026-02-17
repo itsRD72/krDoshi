@@ -187,7 +187,11 @@
             batchDropdown.innerHTML = '<option value="">-- Select Batch --</option>';
 
             if (courseId) {
-                fetch('/get-batches/' + courseId)
+
+                let url = "{{ route('get-batches', ':id') }}";
+                url = url.replace(':id', courseId);
+
+                fetch(url)
                     .then(response => response.json())
                     .then(data => {
 
@@ -203,5 +207,6 @@
             }
         });
     </script>
+
 
 @endsection

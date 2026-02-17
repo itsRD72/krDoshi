@@ -12,6 +12,8 @@ return new class extends Migration {
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+             $table->foreignId('center_id')
+                ->constrained('centers');
             $table->string('name', 50);
             $table->unsignedTinyInteger('max_student');
             $table->unsignedTinyInteger('length_in_week');

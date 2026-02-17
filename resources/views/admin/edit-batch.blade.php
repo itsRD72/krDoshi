@@ -30,7 +30,7 @@
                                     </option>
                                 @endforeach
                             </select>
-
+                            <label for="course_id">Select Course</label>
                             @error('course_id')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror

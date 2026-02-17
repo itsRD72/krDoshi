@@ -39,7 +39,7 @@
 
                         <div class="form-floating mb-3">
                             <select id="batch_id" name="batch_id" class="form-select">
-                                <option value="" disabled>-- Select Batch --</option>
+                                <option value="">-- Select Batch --</option>
                                 @foreach($batches as $batch)
                                     <option value="{{ $batch->id }}" {{ (old('batch_id', $student->batch_id) == $batch->id) ? 'selected' : '' }}>
                                         {{ $batch->name }}
@@ -179,33 +179,50 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script>
-
+    <!-- <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script> -->
     <script>
-        $(document).ready(function () {
-            $('#course_id').change(function () {
-                var courseId = $(this).val();
-                var batchDropdown = $('#batch_id');
-                batchDropdown.html('<option value="">-- Select Batch --</option>');
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let courseDropdown = document.getElementById('course_id');
+            let batchDropdown = document.getElementById('batch_id');
+
+            courseDropdown.addEventListener('change', function () {
+
+                let courseId = this.value;
+
+                // reset batch
+                batchDropdown.innerHTML = '<option value="">-- Select Batch --</option>';
+                batchDropdown.value = "";
 
                 if (courseId) {
-                    $.ajax({
-                        url: '/admin/get-batches/' + courseId,
-                        type: 'GET',
-                        success: function (data) {
+
+                    let url = "{{ route('get-batches', ':id') }}";
+                    url = url.replace(':id', courseId);
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                             console.log(data);
+
                             data.forEach(function (batch) {
-                                batchDropdown.append(
-                                    '<option value="' + batch.id + '">' + batch.name + '</option>'
-                                );
+
+                                let option = document.createElement('option');
+                                option.value = batch.id;
+                                option.text = batch.name;
+
+                                batchDropdown.appendChild(option);
                             });
-                        },
-                        error: function () {
-                            alert('Failed to fetch batches!');
-                        }
-                    });
+
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
                 }
+
             });
+
         });
+
     </script>
 @endsection

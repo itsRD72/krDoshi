@@ -12,8 +12,9 @@ class BatchController extends Controller
 
     public function batch()
     {
-         $courses = DB::table('courses')->get();
-        return view('admin.add-batch', compact('courses'));
+        $centers = DB::table('centers')->get();
+        //  $courses = DB::table('courses')->get();
+        return view('admin.add-batch', compact('centers'));
     }
 
     public function addBatch(Request $request)
@@ -22,12 +23,14 @@ class BatchController extends Controller
             'name' => 'required',
             'start_date' => 'required|date',
             'course_id' => 'required|exists:courses,id',
+            'center_id' => 'required|exists:centers,id',
         ]);
 
         DB::table('batches')->insert([
             'name' => $request->name,
             'start_date' => $request->start_date,
             'course_id' => $request->course_id,
+            'center_id' => $request->center_id,
             'created_by' => auth()->id(),
             'created_at' => now(),
             'updated_at' => now(),
@@ -127,4 +130,14 @@ class BatchController extends Controller
         $batches = Batch::where('course_id', $courseId)->get();
         return response()->json($batches);
     }
+
+    public function getCourses($centerId)
+    {
+        $courses = DB::table('courses')
+            ->where('center_id', $centerId)
+            ->get();
+
+        return response()->json($courses);
+    }
+
 }

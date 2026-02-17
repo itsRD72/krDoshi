@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 50);
             $table->date('start_date');
+            $table->foreignId('center_id')
+                ->constrained('centers');
             $table->foreignId('course_id')
                 ->constrained('courses');
             $table->foreignId('created_by')->nullable()->constrained('users');
