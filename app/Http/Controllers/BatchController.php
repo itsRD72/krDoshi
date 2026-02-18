@@ -44,6 +44,7 @@ class BatchController extends Controller
     {
         $batches = DB::table('batches')
             ->join('courses', 'batches.course_id', '=', 'courses.id')
+            ->join('centers', 'batches.center_id', '=', 'centers.id')
             ->leftJoin('students', function ($join) {
                 $join->on('batches.id', '=', 'students.batch_id')
                     ->whereNull('students.deleted_at'); // if soft delete used
@@ -54,13 +55,15 @@ class BatchController extends Controller
                 'batches.name',
                 'batches.start_date',
                 'courses.name as course_name',
+                'centers.name as center_name',
                 DB::raw('COUNT(students.id) as total_students')
             )
             ->groupBy(
                 'batches.id',
                 'batches.name',
                 'batches.start_date',
-                'courses.name'
+                'courses.name',
+                'centers.name'
             )
             ->get();
 
@@ -78,7 +81,8 @@ class BatchController extends Controller
             abort(404);
         }
         $courses = DB::table('courses')->get();
-        return view('admin.edit-batch', compact('batch', 'courses'));
+        $centers = DB::table('centers')->get();
+        return view('admin.edit-batch', compact('batch', 'courses', 'centers'));
     }
 
     public function updateBatch(Request $request, $id)
@@ -96,6 +100,8 @@ class BatchController extends Controller
             ->where('id', $id)
             ->update([
                 'name' => $request->name,
+                'course_id' => $request->course_id,
+                'center_id' => $request->center_id,
                 'start_date' => $request->start_date,
                 'updated_by' => auth()->id(),
                 'updated_at' => now(),
@@ -125,9 +131,16 @@ class BatchController extends Controller
     }
 
 
-    public function getBatches($courseId)
+    public function getBatches($centerId, $courseId)
     {
-        $batches = Batch::where('course_id', $courseId)->get();
+        $batches = DB::table('batches')
+            ->where('center_id', $centerId)
+            ->where('course_id', $courseId)
+            ->whereDate('start_date', '>=', now())
+            ->whereNull('deleted_at')
+            ->select('id', 'name', 'start_date')
+            ->get();
+
         return response()->json($batches);
     }
 

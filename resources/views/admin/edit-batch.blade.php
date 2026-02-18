@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="d-flex justify-content-center">
                     <div class="auth-header">
-                        <h2 class="text-secondary mt-2">Add Staff</h2>
+                        <h2 class="text-secondary mt-2">Update Batch</h2>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,26 @@
                     <form action="{{ route('update-batch', $batch->id) }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
-                            <select name="course_id" class="form-control">
+                            <select id="center_id" name="center_id" class="form-select">
+                                <option value="" disabled {{ old('center_id') ? '' : 'selected' }}>
+                                    -- Select Center --
+                                </option>
+
+                                @foreach($centers as $center)
+                                    <option value="{{ $center->id }}" {{ old('center_id', $batch->center_id) == $center->id ? 'selected' : '' }}>
+                                        {{ $center->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <label for="center_id">Select Center</label>
+
+                            @error('center_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select id="course_id" name="course_id" class="form-select">
                                 <option value="">-- Select Course --</option>
 
                                 @foreach($courses as $course)
@@ -68,6 +87,55 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script>
+  
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let centerSelect = document.getElementById('center_id');
+            let selectedCenter = centerSelect.value;
+            let selectedCourse = "{{ $batch->course_id }}";
+
+            if (selectedCenter) {
+                loadCourses(selectedCenter, selectedCourse);
+            }
+
+            centerSelect.addEventListener('change', function () {
+                loadCourses(this.value);
+            });
+
+            function loadCourses(centerId, selectedCourseId = null) {
+
+                let courseDropdown = document.getElementById('course_id');
+                courseDropdown.innerHTML = '<option value="">-- Select Course --</option>';
+
+                if (centerId) {
+
+                    let url = "{{ route('get-courses', ':id') }}";
+                    url = url.replace(':id', centerId);
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+
+                            data.forEach(function (course) {
+                                let option = document.createElement('option');
+                                option.value = course.id;
+                                option.text = course.name;
+
+                                if (selectedCourseId == course.id) {
+                                    option.selected = true;
+                                }
+
+                                courseDropdown.appendChild(option);
+                            });
+
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            }
+
+        });
+
+    </script>
 @endsection

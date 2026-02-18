@@ -20,18 +20,24 @@
                     @endif
                     <form action="{{ route('add-student') }}" method="post" class="mt-4">
                         @csrf
+                        <div class="form-floating mb-3">
+                            <select id="center_id" class="form-select">
+                                <option value="">-- Select Center --</option>
+
+                                @foreach($centers as $center)
+                                    <option value="{{ $center->id }}">
+                                        {{ $center->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <label>Select Center</label>
+                        </div>
 
                         <div class="form-floating mb-3">
                             <select id="course_id" name="course_id" class="form-select">
-                                <option value="" disabled {{ old('course_id') ? '' : 'selected' }}>
+                                <option value="" selected>
                                     -- Select Course --
                                 </option>
-
-                                @foreach($courses as $course)
-                                    <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                                        {{ $course->name }}
-                                    </option>
-                                @endforeach
                             </select>
 
                             <label for="course_id">Select Course</label>
@@ -42,7 +48,7 @@
                         </div>
                         <div class="form-floating mb-3">
                             <select id="batch_id" name="batch_id" class="form-select">
-                                <option value="" disabled selected>
+                                <option value="" selected>
                                     -- Select Batch --
                                 </option>
                             </select>
@@ -174,39 +180,68 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script>
-
+   
     <script>
-        document.getElementById('course_id').addEventListener('change', function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
-            let courseId = this.value;
-            let batchDropdown = document.getElementById('batch_id');
+            let centerSelect = document.getElementById('center_id');
+            let courseSelect = document.getElementById('course_id');
+            let batchSelect = document.getElementById('batch_id');
 
-            // reset batch dropdown
-            batchDropdown.innerHTML = '<option value="">-- Select Batch --</option>';
+            // Center → Load Courses
+            centerSelect.addEventListener('change', function () {
 
-            if (courseId) {
+                let centerId = this.value;
 
-                let url = "{{ route('get-batches', ':id') }}";
-                url = url.replace(':id', courseId);
+                courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
+                batchSelect.innerHTML = '<option value="">-- Select Batch --</option>';
 
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
+                if (centerId) {
 
-                        data.forEach(function (batch) {
-                            let option = document.createElement('option');
-                            option.value = batch.id;
-                            option.text = batch.name;
-                            batchDropdown.appendChild(option);
+                    fetch(`/get-courses/${centerId}`)
+                        .then(response => response.json())
+                        .then(data => {
+
+                            data.forEach(course => {
+                                let option = document.createElement('option');
+                                option.value = course.id;
+                                option.text = course.name;
+                                courseSelect.appendChild(option);
+                            });
+
                         });
+                }
+            });
 
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
+            // Course → Load Batches
+            courseSelect.addEventListener('change', function () {
+
+                let centerId = centerSelect.value;
+                let courseId = this.value;
+
+                batchSelect.innerHTML = '<option value="">-- Select Batch --</option>';
+
+                if (centerId && courseId) {
+
+                    fetch(`/get-batches/${centerId}/${courseId}`)
+                        .then(response => response.json())
+                        .then(data => {
+
+                            data.forEach(batch => {
+                                let option = document.createElement('option');
+                                option.value = batch.id;
+                                option.text = batch.name + ' (Starts: ' + batch.start_date + ')';
+                                batchSelect.appendChild(option);
+                            });
+
+                        });
+                }
+
+            });
+
         });
     </script>
+
 
 
 @endsection

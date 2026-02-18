@@ -13,14 +13,9 @@ class StudentController extends Controller
 {
     public function student()
     {
-        $courses = DB::table('courses')->get();
-        $firstCourseId = $courses->first()->id ?? null;
+        $centers = DB::table('centers')->get();
 
-        $batches = $firstCourseId
-            ? DB::table('batches')->where('course_id', $firstCourseId)->whereNull('deleted_at')->get()
-            : collect(); // empty collection if no course
-
-        return view('admin.add-student', compact('courses', 'batches'));
+        return view('admin.add-student', compact('centers'));
     }
 
     public function create()
@@ -89,17 +84,26 @@ class StudentController extends Controller
     {
         $student = DB::table('students')
             ->leftJoin('batches', 'students.batch_id', '=', 'batches.id')
-            ->select('students.*', 'batches.course_id')
+            ->select(
+                'students.*',
+                'batches.course_id',
+                'batches.center_id'
+            )
             ->where('students.id', $id)
             ->first();
+
         $courses = DB::table('courses')->get();
+
         $batches = DB::table('batches')
             ->where('course_id', $student->course_id ?? 0)
+            ->where('center_id', $student->center_id ?? 0)
+            ->whereDate('start_date', '>=', now())
+            ->whereNull('deleted_at')
             ->get();
-
 
         return view('admin.edit-student', compact('student', 'courses', 'batches'));
     }
+
 
     public function updateStudent(Request $request, $id)
     {

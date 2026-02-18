@@ -179,31 +179,28 @@
 @endsection
 
 @section('scripts')
-    <!-- <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script> -->
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
             let courseDropdown = document.getElementById('course_id');
             let batchDropdown = document.getElementById('batch_id');
 
+            let centerId = "{{ $student->center_id }}";
+
             courseDropdown.addEventListener('change', function () {
 
                 let courseId = this.value;
 
-                // reset batch
                 batchDropdown.innerHTML = '<option value="">-- Select Batch --</option>';
-                batchDropdown.value = "";
 
-                if (courseId) {
+                if (courseId && centerId) {
 
-                    let url = "{{ route('get-batches', ':id') }}";
-                    url = url.replace(':id', courseId);
+                    let url = "/get-batches/" + centerId + "/" + courseId;
 
                     fetch(url)
                         .then(response => response.json())
                         .then(data => {
-                             console.log(data);
 
                             data.forEach(function (batch) {
 
@@ -223,6 +220,6 @@
             });
 
         });
-
     </script>
+
 @endsection

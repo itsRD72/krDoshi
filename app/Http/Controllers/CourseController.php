@@ -10,14 +10,13 @@ class CourseController extends Controller
 {
     public function course()
     {
-        $centers = DB::table('centers')->get();
-        return view('admin.add-course', compact('centers'));
+
+        return view('admin.add-course');
     }
 
     public function addCourse(Request $request)
     {
         $request->validate([
-            'center_id' => 'required|exists:centers,id',
             'name' => 'required',
             'max_student' => 'required|numeric|min:1',
             'length_in_week' => 'required|numeric|min:1',
@@ -25,7 +24,6 @@ class CourseController extends Controller
         ]);
 
         $course = DB::table('courses')->insert([
-            'center_id' => $request->center_id, 
             'name' => $request->name,
             'max_student' => $request->max_student,
             'length_in_week' => $request->length_in_week,

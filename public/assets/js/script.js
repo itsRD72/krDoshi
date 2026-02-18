@@ -16,7 +16,7 @@ Description:  this file will contains behavior, properties,
 var flg = '0';
 document.addEventListener('DOMContentLoaded', function () {
   // feather icon start
-  feather.replace();
+  // feather.replace();
   // feather icon end
 
   // remove pre-loader start

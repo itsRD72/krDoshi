@@ -14,6 +14,7 @@
         <table class="table table-bordered table-striped w-75 mx-auto text-center shadow-sm rounded-4">
             <thead class="table-secondary">
                 <tr>
+                    <th class="fw-bold">Center Name</th>
                     <th class="fw-bold">Course Name</th>
                     <th class="fw-bold">Batch Name</th>
                     <th class="fw-bold">Start Date</th>
@@ -24,6 +25,7 @@
             <tbody>
                 @foreach($batches as $item)
                     <tr>
+                        <td>{{ $item->center_name }}</td>
                         <td>{{ $item->course_name }}</td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->start_date }}</td>
@@ -46,7 +48,3 @@
     </div>
 @endsection
 
-@section('scripts')
-    <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard-default.js') }}"></script>
-@endsection
