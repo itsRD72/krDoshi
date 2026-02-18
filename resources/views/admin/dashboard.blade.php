@@ -134,23 +134,37 @@
       </div>
     </div>
 
-    <div class="col-xl-8 col-md-12">
+  <!--  <div class="col-xl-8 col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row mb-3 align-items-center">
             <div class="col">
+<<<<<<< Updated upstream
               <small class="text-muted">Total Growth</small>
               <h3>$2,324.00</h3>
             </div>
             <div class="col-auto">
+=======
+               <small class="text-muted">Our Achievments</small> 
+              <h3>Facilities Available</h3>
+              <h3>Our Achievments</h3>
+            </div>
+             <div class="col-auto">
+>>>>>>> Stashed changes
               <select class="form-select p-r-35">
                 <option>Today</option>
                 <option selected>This Month</option>
                 <option>This Year</option>
               </select>
+<<<<<<< Updated upstream
             </div>
           </div>
           <div id="growthchart"></div>
+=======
+            </div> 
+          </div>
+           <div id="growthchart"></div> 
+>>>>>>> Stashed changes
         </div>
       </div>
     </div>
@@ -163,7 +177,11 @@
             </div>
             <div class="col-auto"></div>
           </div>
+<<<<<<< Updated upstream
           <div class="rounded bg-light-secondary overflow-hidden mb-3">
+=======
+           <div class="rounded bg-light-secondary overflow-hidden mb-3">
+>>>>>>> Stashed changes
             <div class="px-3 pt-3">
               <div class="row mb-1 align-items-start">
                 <div class="col">
@@ -176,15 +194,26 @@
               </div>
             </div>
             <div id="bajajchart"></div>
+<<<<<<< Updated upstream
           </div>
+=======
+          </div> 
+>>>>>>> Stashed changes
           <ul class="list-group list-group-flush">
             <li class="list-group-item px-0">
               <div class="row align-items-start">
                 <div class="col">
+<<<<<<< Updated upstream
                   <h5 class="mb-0">Bajaj Finery</h5>
                   <small class="text-success">10% Profit</small>
                 </div>
                 <div class="col-auto">
+=======
+                  <h5 class="mb-0">Laravel</h5>
+                   <small class="text-success">10% Profit</small> 
+                </div>
+                 <div class="col-auto">
+>>>>>>> Stashed changes
                   <h4 class="mb-0">
                     $1839.00
                     <span class="ms-2 align-top avtar avtar-xxs bg-light-success"><i
@@ -196,25 +225,43 @@
             <li class="list-group-item px-0">
               <div class="row align-items-start">
                 <div class="col">
+<<<<<<< Updated upstream
                   <h5 class="mb-0">TTML</h5>
                   <small class="text-danger">10% Profit</small>
                 </div>
                 <div class="col-auto">
+=======
+                  <h5 class="mb-0">MERN Stack</h5>
+                   <small class="text-danger">10% Profit</small> 
+                </div>
+                 <div class="col-auto">
+>>>>>>> Stashed changes
                   <h4 class="mb-0">
                     $100.00
                     <span class="ms-2 align-top avtar avtar-xxs bg-light-danger"><i
                         class="ti ti-chevron-down text-danger"></i></span>
                   </h4>
+<<<<<<< Updated upstream
                 </div>
+=======
+                </div> 
+>>>>>>> Stashed changes
               </div>
             </li>
             <li class="list-group-item px-0">
               <div class="row align-items-start">
                 <div class="col">
+<<<<<<< Updated upstream
                   <h5 class="mb-0">Reliance</h5>
                   <small class="text-success">10% Profit</small>
                 </div>
                 <div class="col-auto">
+=======
+                  <h5 class="mb-0">Anguler</h5>
+                   <small class="text-success">10% Profit</small> 
+                </div>
+                 <div class="col-auto">
+>>>>>>> Stashed changes
                   <h4 class="mb-0">
                     $200.00
                     <span class="ms-2 align-top avtar avtar-xxs bg-light-success"><i
@@ -226,31 +273,53 @@
             <li class="list-group-item px-0">
               <div class="row align-items-start">
                 <div class="col">
+<<<<<<< Updated upstream
                   <h5 class="mb-0">TTML</h5>
                   <small class="text-danger">10% Profit</small>
                 </div>
                 <div class="col-auto">
+=======
+                  <h5 class="mb-0">Advance Python</h5>
+                   <small class="text-danger">10% Profit</small> 
+                </div>
+                 <div class="col-auto">
+>>>>>>> Stashed changes
                   <h4 class="mb-0">
                     $189.00
                     <span class="ms-2 align-top avtar avtar-xxs bg-light-danger"><i
                         class="ti ti-chevron-down text-danger"></i></span>
                   </h4>
+<<<<<<< Updated upstream
                 </div>
+=======
+                </div> 
+>>>>>>> Stashed changes
               </div>
             </li>
             <li class="list-group-item px-0">
               <div class="row align-items-start">
                 <div class="col">
+<<<<<<< Updated upstream
                   <h5 class="mb-0">Stolon</h5>
                   <small class="text-danger">10% Profit</small>
                 </div>
                 <div class="col-auto">
+=======
+                  <h5 class="mb-0">Core Php</h5>
+                   <small class="text-danger">10% Profit</small> 
+                </div>
+                 <div class="col-auto">
+>>>>>>> Stashed changes
                   <h4 class="mb-0">
                     $189.00
                     <span class="ms-2 align-top avtar avtar-xxs bg-light-danger"><i
                         class="ti ti-chevron-down text-danger"></i></span>
                   </h4>
+<<<<<<< Updated upstream
                 </div>
+=======
+                </div> 
+>>>>>>> Stashed changes
               </div>
             </li>
           </ul>
@@ -262,9 +331,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- [ sample-page ] end -->
-  </div>
+ <!--</div> -->
   <!-- [ Main Content ] end -->
 
 @endsection
