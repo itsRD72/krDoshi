@@ -14,11 +14,12 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     @if(session('success'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show">
                             {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form action="{{ route('add-student') }}" method="post" class="mt-4">
+                    <form action="{{ route('student.store') }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
                             <select id="center_id" class="form-select">
@@ -38,6 +39,11 @@
                                 <option value="" selected>
                                     -- Select Course --
                                 </option>
+                                @foreach($courses as $course)
+                                    <option value="{{ $course->id }}">
+                                        {{ $course->name }}
+                                    </option>
+                                @endforeach
                             </select>
 
                             <label for="course_id">Select Course</label>
@@ -180,38 +186,13 @@
 @endsection
 
 @section('scripts')
-   
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
             let centerSelect = document.getElementById('center_id');
             let courseSelect = document.getElementById('course_id');
             let batchSelect = document.getElementById('batch_id');
-
-            // Center → Load Courses
-            centerSelect.addEventListener('change', function () {
-
-                let centerId = this.value;
-
-                courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
-                batchSelect.innerHTML = '<option value="">-- Select Batch --</option>';
-
-                if (centerId) {
-
-                    fetch(`/get-courses/${centerId}`)
-                        .then(response => response.json())
-                        .then(data => {
-
-                            data.forEach(course => {
-                                let option = document.createElement('option');
-                                option.value = course.id;
-                                option.text = course.name;
-                                courseSelect.appendChild(option);
-                            });
-
-                        });
-                }
-            });
 
             // Course → Load Batches
             courseSelect.addEventListener('change', function () {

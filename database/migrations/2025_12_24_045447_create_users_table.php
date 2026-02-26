@@ -12,9 +12,18 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
+            $table->foreignId('center_id')->nullable()->constrained('centers')->index();
             $table->string('password', 150);
-            $table->string('role', 30);
+            $table->enum('role', ['admin', 'coordinator', 'staff'])->index();
+            $table->string('first_name', 30)->nullable();
+            $table->string( 'middle_name', 30)->nullable();
+            $table->string('last_name', 30)->nullable();
+            $table->string('address')->nullable()->nullable();
+            $table->string('village', 30)->nullable();
+            $table->string('taluko', 30)->nullable();
+            $table->string('district', 30)->nullable();
+            $table->string('phone_number', 12);
+            $table->string('email', 50)->unique();
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('deleted_by')->nullable()->constrained('users');

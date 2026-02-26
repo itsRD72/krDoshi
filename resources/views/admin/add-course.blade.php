@@ -13,12 +13,13 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    @if(session('success'))
-                        <div class="alert alert-success">
+                     @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show">
                             {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form action="{{ route('add-course') }}" method="post" class="mt-4">
+                    <form action="{{ route('course.store') }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
                         <div class="form-floating mb-3">
@@ -54,7 +55,7 @@
                             <input class="form-check-input" type="checkbox" id="isSunday" name="is_avail_sunday" value="1">
 
                             <label class="form-check-label" for="isSunday">
-                                Is Available only on Sunday
+                                Is available only on Sunday
                             </label>
 
                             @error('is_avail_sunday')

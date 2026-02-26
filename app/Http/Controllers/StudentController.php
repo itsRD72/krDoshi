@@ -2,25 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Batch;
 use App\Models\Student;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
 class StudentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+       
+        $this->middleware(function ($request, $next) {
+            $role = auth()->user()->role;
+
+            if ($role === 'staff') {
+                $allowedRoutes = [
+                    'studentList',
+                    'editStudent',
+                    'updateStudent',
+                    'viewStudent',
+                    'getBatchesByCourse' 
+                ];
+
+                if (!in_array($request->route()->getActionMethod(), $allowedRoutes)) {
+                    return redirect()->route('dashboard')
+                        ->with('error', 'You are not allowed to access that page.');
+                }
+            }
+
+            return $next($request);
+        });
+    }
+
     public function student()
     {
-        $centers = DB::table('centers')->get();
+        $centers = auth()->user()->role === 'admin'
+            ? DB::table('centers')->get()
+            : DB::table('centers')->where('id', auth()->user()->center_id)->get();
 
-        return view('admin.add-student', compact('centers'));
+        $courses = DB::table('courses')->get();
+
+        return view('admin.add-student', compact('centers', 'courses'));
     }
 
     public function create()
     {
-        $courses = Course::all();
+        $courses = DB::table('courses')->get();
         return view('admin.add-student', compact('courses'));
     }
 
@@ -35,10 +64,8 @@ class StudentController extends Controller
             'village' => 'required|string|max:30',
             'taluko' => 'required|string|max:30',
             'district' => 'required|string|max:30',
-
             'phone_number' => 'required|digits_between:10,12',
             'parent_number' => 'required|digits_between:10,12',
-
             'email' => 'required|email|max:50|unique:students,email',
             'parent_email' => 'required|email|max:50',
         ]);
@@ -64,35 +91,60 @@ class StudentController extends Controller
         return back()->with('success', 'Student added successfully!');
     }
 
-    public function studentList()
+    public function studentList(Request $request)
     {
-        $students = DB::table('students')
+        $search = $request->search;
+
+        $query = DB::table('students')
             ->leftJoin('batches', 'students.batch_id', '=', 'batches.id')
             ->leftJoin('courses', 'batches.course_id', '=', 'courses.id')
-            ->whereNull('students.deleted_at')
-            ->select(
-                'students.*',
-                'batches.name as batch_name',
-                'courses.name as course_name'
-            )
-            ->get();
+            ->whereNull('students.deleted_at');
+
+        
+        if (auth()->user()->role === 'staff') {
+            $query->where('batches.center_id', auth()->user()->center_id);
+        }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('batches.name', 'like', "%$search%")
+                  ->orWhere('students.first_name', 'like', "%$search%")
+                  ->orWhere('students.last_name', 'like', "%$search%")
+                  ->orWhere('students.village', 'like', "%$search%")
+                  ->orWhere('students.taluko', 'like', "%$search%");
+            });
+        }
+
+        $students = $query->select(
+            'students.*',
+            'batches.name as batch_name',
+            'courses.name as course_name'
+        )
+        ->paginate(20)
+        ->appends(['search' => $search]);
 
         return view('admin.student-list', compact('students'));
     }
 
     public function editStudent($id)
     {
-        $student = DB::table('students')
+        $query = DB::table('students')
             ->leftJoin('batches', 'students.batch_id', '=', 'batches.id')
-            ->select(
-                'students.*',
-                'batches.course_id',
-                'batches.center_id'
-            )
-            ->where('students.id', $id)
-            ->first();
+            ->select('students.*', 'batches.course_id', 'batches.center_id')
+            ->where('students.id', $id);
+
+        if (auth()->user()->role === 'staff') {
+            $query->where('batches.center_id', auth()->user()->center_id);
+        }
+
+        $student = $query->first();
+        if (!$student) {
+            return redirect()->route('dashboard')
+                ->with('error', 'You are not allowed to access that page.');
+        }
 
         $courses = DB::table('courses')->get();
+        $centers = DB::table('centers')->get();
 
         $batches = DB::table('batches')
             ->where('course_id', $student->course_id ?? 0)
@@ -101,9 +153,8 @@ class StudentController extends Controller
             ->whereNull('deleted_at')
             ->get();
 
-        return view('admin.edit-student', compact('student', 'courses', 'batches'));
+        return view('admin.edit-student', compact('student', 'courses', 'batches', 'centers'));
     }
-
 
     public function updateStudent(Request $request, $id)
     {
@@ -116,15 +167,26 @@ class StudentController extends Controller
             'village' => 'required|string|max:30',
             'taluko' => 'required|string|max:30',
             'district' => 'required|string|max:30',
-
             'phone_number' => 'required|digits_between:10,12',
             'parent_number' => 'required|digits_between:10,12',
-
             'email' => 'required|email|max:50|unique:students,email,' . $id,
             'parent_email' => 'required|email|max:50',
         ]);
 
-        $updated = DB::table('students')
+        // Check staff access
+        if (auth()->user()->role === 'staff') {
+            $studentCenter = DB::table('students')
+                ->join('batches', 'students.batch_id', '=', 'batches.id')
+                ->where('students.id', $id)
+                ->value('batches.center_id');
+
+            if ($studentCenter != auth()->user()->center_id) {
+                return redirect()->route('dashboard')
+                    ->with('error', 'You are not allowed to access that page.');
+            }
+        }
+
+        DB::table('students')
             ->where('id', $id)
             ->update([
                 'batch_id' => $request->batch_id,
@@ -143,44 +205,55 @@ class StudentController extends Controller
                 'updated_at' => now(),
             ]);
 
-        if ($updated !== false) {
-            return redirect()->route('student-list-page')
-                ->with('success', 'Student updated successfully!');
-        }
-
-        return back()->with('error', 'Update failed!');
+        return redirect()->route('student.index')
+            ->with('success', 'Student updated successfully!');
     }
 
     public function viewStudent($id)
     {
-        $student = DB::table('students')
+        $query = DB::table('students')
             ->join('batches', 'students.batch_id', '=', 'batches.id')
             ->join('courses', 'batches.course_id', '=', 'courses.id')
             ->join('centers', 'batches.center_id', '=', 'centers.id')
             ->where('students.id', $id)
-            ->whereNull('students.deleted_at')
-            ->select(
-                'students.*',
-                'courses.name as course_name',
-                'batches.name as batch_name',
-                'centers.name as center_name'
-            )
-            ->first();
+            ->whereNull('students.deleted_at');
+
+        if (auth()->user()->role === 'staff') {
+            $query->where('centers.id', auth()->user()->center_id);
+        }
+
+        $student = $query->select(
+            'students.*',
+            'courses.name as course_name',
+            'batches.name as batch_name',
+            'centers.name as center_name'
+        )->first();
 
         if (!$student) {
-            abort(404);
+            return redirect()->route('dashboard')
+                ->with('error', 'You are not allowed to access that page.');
         }
 
         return view('admin.student-view', compact('student'));
     }
 
-
     public function deleteStudent($id)
     {
-        $exists = DB::table('students')->where('id', $id)->exists();
+        $student = DB::table('students')->where('id', $id)->whereNull('deleted_at')->first();
+        if (!$student) {
+            return redirect()->route('student-list-page')->with('error', 'Student not found!');
+        }
 
-        if (!$exists) {
-            abort(404, 'Student not found');
+        if (auth()->user()->role === 'staff') {
+            $studentCenter = DB::table('students')
+                ->join('batches', 'students.batch_id', '=', 'batches.id')
+                ->where('students.id', $id)
+                ->value('batches.center_id');
+
+            if ($studentCenter != auth()->user()->center_id) {
+                return redirect()->route('dashboard')
+                    ->with('error', 'You are not allowed to access that page.');
+            }
         }
 
         DB::table('students')
@@ -193,5 +266,4 @@ class StudentController extends Controller
         return redirect()->route('student-list-page')
             ->with('success', 'Student deleted successfully!');
     }
-
 }

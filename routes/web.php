@@ -10,94 +10,102 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'admin.login')->name('admin.login');
-Route::post('/login', [UserController::class, 'login'])->name('login');
+/* AUTH ROUTES */
+Route::view('/', 'admin.login')->name('login');
+Route::post('/login', [UserController::class, 'login'])->name('login.post');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])
-    ->name('dashboard')
-    ->middleware('auth');
 
-Route::view('/admin/add-staff', 'admin.add-staff')->name('add-staff-form');
-Route::post('add-staff', [UserController::class, 'addStaff'])->name('add-staff');
+/* ADMIN PANEL */
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 
-
-Route::view('/admin/staff-list', 'admin.staff-list')->name('staff-list');
-Route::get('/admin/staff-list', [UserController::class, 'staffList'])->name('staff-list-page');
-
-Route::get('/admin/editStaff/{id}', [UserController::class, 'editStaff'])->name('editstaff-form');
-Route::post('/updateStaff/{id}', [UserController::class, 'updateStaff'])->name('update-staff');
-Route::get('admin/deleteStaff/{id}', [UserController::class, 'deleteStaff'])->name('delete-staff');
-
-Route::get('/admin/add-course', [CourseController::class, 'course'])->name('add-course-page');
-Route::post('add-course', [CourseController::class, 'addCourse'])->name('add-course');
-Route::get('/courses', [CourseController::class, 'courseList'])->name('course-list-page');
-
-Route::get('/admin/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit-course');
-Route::post('/updateCourse/{id}', [CourseController::class, 'updateCourse'])->name('update-course');
-Route::get('admin/deleteCourse/{id}', [CourseController::class, 'deleteCourse'])->name('delete-course');
-
-Route::get('/admin/batch', [BatchController::class, 'batch'])->name('add-batch-page');
-Route::post('/admin/addBatch', [BatchController::class, 'addBatch'])->name('add-batch');
-
-Route::get('/admin/batch-list', [BatchController::class, 'batchList'])->name('batch-list');
-
-Route::get('/admin/editBatch/{id}', [BatchController::class, 'editBatch'])->name('editbatch-form');
-Route::post('/updateBatch/{id}', [BatchController::class, 'updateBatch'])->name('update-batch');
-Route::get('admin/deleteBatch/{id}', [BatchController::class, 'deleteBatch'])->name('delete-batch');
+    Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 
-Route::view('/admin/center', 'admin.add-center')->name('add-center-page');
-Route::post('/admin/addCenter', [CenterController::class, 'addCenter'])->name('add-center');
+    Route::middleware('role:admin')->group(function () {
 
-Route::get('/admin/center-list', [CenterController::class, 'centerList'])->name('center-list');
+        /* ---------- Centers ---------- */
+        Route::get('centers', [CenterController::class, 'centerList'])->name('center.index');
+        Route::get('add-center', fn() => view('admin.add-center'))->name('center.create');
+        Route::post('add-center', [CenterController::class, 'addCenter'])->name('center.store');
+        Route::get('edit-center/{id}', [CenterController::class, 'editCenter'])->name('center.edit');
+        Route::post('update-center/{id}', [CenterController::class, 'updateCenter'])->name('center.update');
+        Route::get('view-center/{id}', [CenterController::class, 'viewCenter'])->name('center.show');
+        Route::get('delete-center/{id}', [CenterController::class, 'deleteCenter'])->name('center.delete');
 
-Route::get('/admin/editCenter/{id}', [CenterController::class, 'editCenter'])->name('editcenter-form');
-Route::post('/updateCenter/{id}', [CenterController::class, 'updateCenter'])->name('update-center');
-Route::get('admin/centertview/{id}', [CenterController::class, 'viewCenter'])
-    ->name('view-center');
-Route::get('admin/deleteCenter/{id}', [CenterController::class, 'deleteCenter'])->name('delete-center');
-
-
-Route::get('/admin/student', [StudentController::class, 'student'])
-    ->name('add-student-page');
-
-Route::post('/admin/student', [StudentController::class, 'addStudent'])
-    ->name('add-student');
-Route::get(
-    '/get-batches/{centerId}/{courseId}',
-    [BatchController::class, 'getBatches']
-)->name('get-batches');
-Route::get('/get-courses/{centerId}', [BatchController::class, 'getCourses'])->name('get-courses');
-
-Route::get('/admin/create', [StudentController::class, 'create'])
-    ->name('admin.create');
-
-Route::get('/admin/student-list', [StudentController::class, 'studentList'])->name('student-list-page');
+        /* ---------- Courses ---------- */
+        Route::get('add-course', [CourseController::class, 'course'])->name('course.create');
+        Route::post('add-course', [CourseController::class, 'addCourse'])->name('course.store');
+        Route::get('edit-course/{id}', [CourseController::class, 'editCourse'])->name('course.edit');
+        Route::post('update-course/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
+        Route::get('delete-course/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
 
 
-Route::get('/admin/editStudent/{id}', [StudentController::class, 'editStudent'])->name('editstudent-form');
-Route::post('/updateStudent/{id}', [StudentController::class, 'updateStudent'])->name('update-student');
-Route::get('admin/studentview/{id}', [StudentController::class, 'viewStudent'])
-    ->name('view-student');
-Route::get('admin/deleteStudent/{id}', [StudentController::class, 'deleteStudent'])->name('delete-student');
+    });
 
 
+    /* ADMIN + COORDINATOR */
+    Route::middleware('role:admin,coordinator')->group(function () {
 
-Route::get('/admin/mcq', [McqController::class, 'mcq'])->name('add-mcq-page');
-Route::post('/admin/addMcq', [McqController::class, 'addMcq'])->name('add-mcq');
+        /* Staff List (View + Update) */
+        Route::get('add-staff', [UserController::class, 'createStaff'])->name('staff.create');
+        Route::get('staff-view/{id}', [UserController::class, 'viewStaff'])->name('staff.show');
+        Route::post('add-staff', [UserController::class, 'addStaff'])->name('staff.store');
+        Route::get('staff-list', [UserController::class, 'staffList'])->name('staff.index');
+        Route::get('edit-staff/{id}', [UserController::class, 'editStaff'])->name('staff.edit');
+        Route::post('update-staff/{id}', [UserController::class, 'updateStaff'])->name('staff.update');
+        Route::get('delete-staff/{id}', [UserController::class, 'deleteStaff'])->name('staff.delete');
 
-Route::get('/admin/mcq-list', [McqController::class, 'mcqList'])->name('mcq-list-page');
+        /* ---------- Courses ---------- */
+        Route::get('courses', [CourseController::class, 'courseList'])->name('course.index');
 
-Route::get('/admin/editMcq/{id}', [McqController::class, 'editMcq'])->name('editmcq-form');
-Route::post('/updateMcq/{id}', [McqController::class, 'updateMcq'])->name('update-mcq');
-Route::get('admin/deleteMcq/{id}', [McqController::class, 'deleteMcq'])->name('delete-mcq');
+        /* Batches */
+        Route::get('add-batch', [BatchController::class, 'batch'])->name('batch.create');
+        Route::post('add-batch', [BatchController::class, 'addBatch'])->name('batch.store');
+        Route::get('edit-batch/{id}', [BatchController::class, 'editBatch'])->name('batch.edit');
+        Route::post('update-batch/{id}', [BatchController::class, 'updateBatch'])->name('batch.update');
+        Route::get('delete-batch/{id}', [BatchController::class, 'deleteBatch'])->name('batch.delete');
 
 
+        /*  Students  */
+        Route::get('add-student', [StudentController::class, 'student'])->name('student.create');
+        Route::post('add-student', [StudentController::class, 'addStudent'])->name('student.store');
+        Route::get('edit-student/{id}', [StudentController::class, 'editStudent'])->name('student.edit');
+        Route::post('update-student/{id}', [StudentController::class, 'updateStudent'])->name('student.update');
+        Route::get('delete-student/{id}', [StudentController::class, 'deleteStudent'])->name('student.delete');
 
-Route::get('/admin/exam-setup', [ExamController::class, 'setup'])
-    ->name('exam-setup');
-Route::get('/admin/select-questions', [ExamController::class, 'selectQuestions'])
-    ->name('exam-select');
-Route::post('/admin/exam-print', [ExamController::class, 'printPaper'])
-    ->name('exam-print');
+        /* ---------- MCQ ---------- */
+
+        Route::get('delete-mcq/{id}', [McqController::class, 'deleteMcq'])->name('mcq.delete');
+
+    });
+
+
+    /* STAFF ACCESS  */
+    Route::middleware('role:admin,coordinator,staff')->group(function () {
+
+        Route::get('staff-view/{id}', [UserController::class, 'viewStaff'])->name('staff.show');
+        // View Batches (only their center — filter in controller)
+        Route::get('batches', [BatchController::class, 'batchList'])->name('batch.index');
+
+        // Update Students
+        Route::get('students', [StudentController::class, 'studentList'])->name('student.index');
+        Route::get('view-student/{id}', [StudentController::class, 'viewStudent'])->name('student.show');
+
+        /* ---------- MCQ ---------- */
+        Route::get('add-mcq', [McqController::class, 'mcq'])->name('mcq.create');
+        Route::post('add-mcq', [McqController::class, 'addMcq'])->name('mcq.store');
+        Route::get('mcqs', [McqController::class, 'mcqList'])->name('mcq.index');
+        Route::get('edit-mcq/{id}', [McqController::class, 'editMcq'])->name('mcq.edit');
+        Route::post('update-mcq/{id}', [McqController::class, 'updateMcq'])->name('mcq.update');
+
+        // Manage Exam
+        Route::post('create-paper', [McqController::class, 'createPaper'])->name('mcq.paper');
+    });
+
+});
+
+
+/* ================= AJAX ROUTES ================= */
+Route::get('/get-courses', [BatchController::class, 'getCourses'])->name('get-courses');
+Route::get('/get-batches/{centerId}/{courseId}', [BatchController::class, 'getBatches'])->name('get-batches');

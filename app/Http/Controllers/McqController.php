@@ -10,6 +10,36 @@ use Illuminate\Support\Facades\DB;
 class McqController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware(function ($request, $next) {
+
+            $role = auth()->user()->role;
+
+            // Staff restrictions
+            if ($role == 'staff') {
+
+                $allowedRoutes = [
+                    'mcq.index',
+                    'mcq.create',
+                    'mcq.store',
+                    'mcq.edit',
+                    'mcq.update',
+                    'mcq.paper'
+                ];
+
+                if (!in_array($request->route()->getName(), $allowedRoutes)) {
+                    return redirect()->route('dashboard')
+                        ->with('error', 'You are not allowed to access that page.');
+                }
+            }
+
+            return $next($request);
+
+        });
+    }
     public function mcq()
     {
         $courses = DB::table('courses')->get();
@@ -45,23 +75,30 @@ class McqController extends Controller
     }
 
 
-    public function mcqList()
+    public function mcqList(Request $request)
     {
-        $mcqs = DB::table('mcqs')
-            ->join('courses', 'mcqs.course_id', '=', 'courses.id')
-            ->whereNull('mcqs.deleted_at')
-            ->select(
-                'mcqs.id',
-                'mcqs.question',
-                'mcqs.option_a',
-                'mcqs.option_b',
-                'mcqs.option_c',
-                'mcqs.option_d',
-                'mcqs.correct_option',
-                'courses.name as course_name'
-            )->get();
+        $courses = DB::table('courses')->get();
+        $mcqs = collect();
 
-        return view('admin.mcq-list', compact('mcqs'));
+        if ($request->course_id) {
+
+            $mcqs = DB::table('mcqs')
+                ->join('courses', 'mcqs.course_id', '=', 'courses.id')
+                ->whereNull('mcqs.deleted_at')
+                ->where('mcqs.course_id', $request->course_id)
+                ->select(
+                    'mcqs.id',
+                    'mcqs.question',
+                    'mcqs.option_a',
+                    'mcqs.option_b',
+                    'mcqs.option_c',
+                    'mcqs.option_d',
+                    'mcqs.correct_option'
+                )
+                ->paginate(50);
+        }
+
+        return view('admin.mcq-list', compact('mcqs', 'courses'));
     }
 
     public function editMcq($id)
@@ -102,8 +139,36 @@ class McqController extends Controller
                 'updated_at' => now(),
             ]);
 
-        return redirect()->route('mcq-list-page')
+        return redirect()->route('mcq.index')
             ->with('success', 'Mcq updated successfully!');
+    }
+
+    public function createPaper(Request $request)
+    {
+        $request->validate([
+            'selected_mcqs' => 'required|array|min:1'
+        ]);
+
+        $mcqs = DB::table('mcqs')
+            ->whereIn('id', $request->selected_mcqs)
+            ->get();
+
+        $course_id = $mcqs->first()->course_id;
+
+
+        $course = DB::table('courses')
+            ->where('id', $course_id)
+            ->first();
+
+        $center = null;
+
+        if (auth()->user()->center_id != null) {
+            $center = DB::table('centers')
+                ->where('id', auth()->user()->center_id)
+                ->first();
+        }
+
+        return view('admin.paper-print', compact('mcqs', 'course', 'center'));
     }
 
     public function deleteMcq($id)
@@ -121,7 +186,7 @@ class McqController extends Controller
                 'deleted_at' => now(),
             ]);
 
-        return redirect()->route('mcq-list-page')
+        return redirect()->route('mcq.index')
             ->with('success', 'Mcq deleted successfully!');
     }
 }

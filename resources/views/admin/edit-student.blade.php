@@ -14,12 +14,25 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     @if(session('success'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show">
                             {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form action="{{ route('update-student', $student->id) }}" method="post" class="mt-4">
+                    <form action="{{ route('student.update', $student->id) }}" method="post" class="mt-4">
                         @csrf
+                        <div class="form-floating mb-3">
+                            <select id="center_id" name="center_id" class="form-select">
+                                <option value="">-- Select Center --</option>
+
+                                @foreach($centers as $center)
+                                    <option value="{{ $center->id }}" {{ old('center_id', $student->center_id) == $center->id ? 'selected' : '' }}>
+                                        {{ $center->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <label>Select Center</label>
+                        </div>
 
                         <div class="form-floating mb-3">
                             <select id="course_id" name="course_id" class="form-select">
@@ -179,45 +192,54 @@
 @endsection
 
 @section('scripts')
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-            let courseDropdown = document.getElementById('course_id');
-            let batchDropdown = document.getElementById('batch_id');
+            let centerSelect = document.getElementById('center_id');
+            let courseSelect = document.getElementById('course_id');
+            let batchSelect = document.getElementById('batch_id');
 
-            let centerId = "{{ $student->center_id }}";
+            let selectedCourse = "{{ old('course_id', $student->course_id) }}";
+            let selectedBatch = "{{ old('batch_id', $student->batch_id) }}";
 
-            courseDropdown.addEventListener('change', function () {
+           
+            function loadBatches(centerId, courseId, selectedBatch = null) {
 
-                let courseId = this.value;
+                batchSelect.innerHTML = '<option value="">-- Select Batch --</option>';
 
-                batchDropdown.innerHTML = '<option value="">-- Select Batch --</option>';
-
-                if (courseId && centerId) {
-
-                    let url = "/get-batches/" + centerId + "/" + courseId;
-
-                    fetch(url)
+                if (centerId && courseId) {
+                    fetch(`/get-batches/${centerId}/${courseId}`)
                         .then(response => response.json())
                         .then(data => {
 
-                            data.forEach(function (batch) {
-
+                            data.forEach(batch => {
                                 let option = document.createElement('option');
                                 option.value = batch.id;
-                                option.text = batch.name;
+                                option.text = batch.name + ' (Starts: ' + batch.start_date + ')';
 
-                                batchDropdown.appendChild(option);
+                                if (selectedBatch && selectedBatch == batch.id) {
+                                    option.selected = true;
+                                }
+
+                                batchSelect.appendChild(option);
                             });
 
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
                         });
                 }
+            }
 
+            
+
+            // When course changes
+            courseSelect.addEventListener('change', function () {
+                loadBatches(centerSelect.value, this.value);
             });
+
+            // 🔥 Auto-load on page load (important for update)
+            if (centerSelect.value) {
+                loadCourses(centerSelect.value, selectedCourse);
+            }
 
         });
     </script>

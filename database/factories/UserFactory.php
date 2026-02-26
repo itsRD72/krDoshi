@@ -23,9 +23,28 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Admin',
-            'password' => Hash::make('123456'),
-			'role' => 'Admin'
+            'center_id' => null, 
+
+        'first_name' => null,
+        'middle_name' => null,
+        'last_name' => null,
+
+        'address' => null,
+        'village' => null,
+        'taluko' => null,
+        'district' => null,
+
+        'phone_number' => 9999999999,
+
+        'email' => 'admin@mail.com',
+
+        'password' => Hash::make('123456'),
+
+        'role' => 'admin',
+
+        'created_by' => null,
+        'updated_by' => null,
+        'deleted_by' => null,
         ];
     }
 }

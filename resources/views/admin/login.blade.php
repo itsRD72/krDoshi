@@ -14,21 +14,13 @@
     content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard" />
   <meta name="author" content="codedthemes" />
 
-  <!-- [Favicon] icon -->
-  <link rel="icon" href="assets/images/favicon.svg" type="image/x-icon" />
+ 
   <!-- [Google Font] Family -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
     id="main-font-link" />
-  <!-- [phosphor Icons] https://phosphoricons.com/
-  <link rel="stylesheet" href="assets/fonts/phosphor/duotone/style.css" /> -->
-  <!-- [Tabler Icons] https://tablericons.com -->
-  <!-- <link rel="stylesheet" href="assets/fonts/tabler-icons.min.css" /> -->
-  <!-- [Feather Icons] https://feathericons.com -->
-  <!-- <link rel="stylesheet" href="assets/fonts/feather.css" /> -->
-  <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+  
   <link rel="stylesheet" href="assets/fonts/fontawesome.css" />
-  <!-- [Material Icons] https://fonts.google.com/icons -->
-  <!-- <link rel="stylesheet" href="assets/fonts/material.css" /> -->
+ 
   <!-- [Template CSS Files] -->
   <link rel="stylesheet" href="assets/css/style.css" id="main-style-link" />
   <link rel="stylesheet" href="assets/css/style-preset.css" />
@@ -63,12 +55,12 @@
                     {{$message}}
                 </div>
                 @enderror
-            <form action="{{ route('login') }}" method="post" class="mt-4">
+            <form action="{{ route('login.post') }}" method="post" class="mt-4">
               @csrf
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name" name="name" placeholder="Username" />
-                <label for="floatingInput">Username</label>
-                @error('name')
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" />
+                <label for="floatingInput">Enter Email</label>
+                @error('email')
                 <div class="text-danger">
                     {{$message}}
                 </div>
@@ -100,33 +92,7 @@
   <script src="{{ asset('assets/js/fonts/custom-font.js') }}"></script>
   <script src="assets/js/script.js"></script>
   <script src="assets/js/theme.js"></script>
-  <!-- <script src="assets/js/plugins/feather.min.js"></script> -->
-
-
-  <!-- <script>
-    layout_change('light');
-  </script>
-
-  <script>
-    font_change('Roboto');
-  </script>
-
-  <script>
-    change_box_container('false');
-  </script>
-
-  <script>
-    layout_caption_change('true');
-  </script>
-
-  <script>
-    layout_rtl_change('false');
-  </script>
-
-  <script>
-    preset_change('preset-1');
-  </script> -->
-
+ 
 
 </body>
 <!-- [Body] end -->

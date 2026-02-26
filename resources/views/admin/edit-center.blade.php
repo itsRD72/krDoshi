@@ -18,7 +18,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('update-center', $center->id) }}" method="post" class="mt-4">
+                    <form action="{{ route('center.update', $center->id) }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" value="{{ old('name', $center->name) }}"
@@ -92,17 +92,6 @@
                             @enderror
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="coordinatorname"
-                                value="{{ old('name', $center->coordinator_name) }}" name="coordinator_name"
-                                placeholder="Coordinator Name" />
-                            <label for="coordinatorname">Coordinator Name</label>
-                            @error('coordinator_name')
-                                <div class="text-danger">
-                                    {{$message}}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-floating mb-3">
                             <textarea class="form-control" id="address" value="{{ old('name', $center->address) }}"
                                 name="address" placeholder="Address" style="height: 100px"></textarea>
                             <label for="address">Address</label>
@@ -124,4 +113,3 @@
     </div>
 
 @endsection
-

@@ -20,7 +20,6 @@ class Center extends Model
         'pin_code',
         'phone_number',
         'email',
-        'coordinator_name',
         'created_by',
         'updated_by',
         'deleted_by',

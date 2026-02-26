@@ -18,7 +18,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('update-batch', $batch->id) }}" method="post" class="mt-4">
+                    <form action="{{ route('batch.update', $batch->id) }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
                             <select id="center_id" name="center_id" class="form-select">
@@ -56,7 +56,7 @@
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" value="{{ old('name', $batch->name) }}"
-                                name="name" placeholder="Staff Name" />
+                                name="name" placeholder="Batch Name" />
                             <label for="name">Batch Name</label>
                             @error('name')
                                 <div class="text-danger">
@@ -86,56 +86,3 @@
 
 @endsection
 
-@section('scripts')
-  
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-            let centerSelect = document.getElementById('center_id');
-            let selectedCenter = centerSelect.value;
-            let selectedCourse = "{{ $batch->course_id }}";
-
-            if (selectedCenter) {
-                loadCourses(selectedCenter, selectedCourse);
-            }
-
-            centerSelect.addEventListener('change', function () {
-                loadCourses(this.value);
-            });
-
-            function loadCourses(centerId, selectedCourseId = null) {
-
-                let courseDropdown = document.getElementById('course_id');
-                courseDropdown.innerHTML = '<option value="">-- Select Course --</option>';
-
-                if (centerId) {
-
-                    let url = "{{ route('get-courses', ':id') }}";
-                    url = url.replace(':id', centerId);
-
-                    fetch(url)
-                        .then(response => response.json())
-                        .then(data => {
-
-                            data.forEach(function (course) {
-                                let option = document.createElement('option');
-                                option.value = course.id;
-                                option.text = course.name;
-
-                                if (selectedCourseId == course.id) {
-                                    option.selected = true;
-                                }
-
-                                courseDropdown.appendChild(option);
-                            });
-
-                        })
-                        .catch(error => console.error('Error:', error));
-                }
-            }
-
-        });
-
-    </script>
-@endsection

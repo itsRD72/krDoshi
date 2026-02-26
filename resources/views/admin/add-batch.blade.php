@@ -14,11 +14,12 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     @if(session('success'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show">
                             {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form action="{{ route('add-batch') }}" method="post" class="mt-4">
+                    <form action="{{ route('batch.store') }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
                             <select id="center_id" name="center_id" class="form-select">
@@ -42,6 +43,11 @@
                         <div class="form-floating mb-3">
                             <select name="course_id" id="course_id" class="form-select">
                                 <option value="">-- Select Course --</option>
+                                 @foreach($courses as $course)
+                                    <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                                        {{ $course->name }}
+                                    </option>
+                                @endforeach
                             </select>
                             <label>Select Course</label>
 
@@ -80,37 +86,3 @@
 
 @endsection
 
-@section('scripts')
-   
-    <script>
-        document.getElementById('center_id').addEventListener('change', function () {
-
-            let centerId = this.value;
-            let courseDropdown = document.getElementById('course_id');
-
-            courseDropdown.innerHTML = '<option value="">-- Select Course --</option>';
-
-            if (centerId) {
-
-                let url = "{{ route('get-courses', ':id') }}";
-                url = url.replace(':id', centerId);
-
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-
-                        data.forEach(function (course) {
-                            let option = document.createElement('option');
-                            option.value = course.id;
-                            option.text = course.name;
-                            courseDropdown.appendChild(option);
-                        });
-
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-
-        });
-    </script>
-
-@endsection

@@ -9,6 +9,20 @@ use Illuminate\Http\Request;
 
 class CenterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware(function ($request, $next) {
+
+            if (auth()->user()->role !== 'admin') {
+                return redirect()->route('dashboard')
+                    ->with('error', 'You are not allowed to access that page.');
+            }
+
+            return $next($request);
+        });
+    }
     public function center()
     {
         return view('admin.add-center');
@@ -25,9 +39,7 @@ class CenterController extends Controller
             'pin_code' => 'required|digits:6',
             'phone_number' => 'required|digits_between:10,12',
             'email' => 'required|email|max:50|unique:centers,email',
-            'coordinator_name' => 'required',
         ]);
-
 
         DB::table('centers')->insert([
             'name' => $request->name,
@@ -38,7 +50,6 @@ class CenterController extends Controller
             'pin_code' => $request->pin_code,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
-            'coordinator_name' => $request->coordinator_name,
             'created_by' => auth()->id(),
             'created_at' => now(),
             'updated_at' => now(),
@@ -47,11 +58,22 @@ class CenterController extends Controller
         return back()->with('success', 'Center added successfully!');
     }
 
-    public function centerList()
+    public function centerList(Request $request)
     {
+        $search = $request->search;
         $centers = DB::table('centers')
             ->whereNull('deleted_at')
-            ->get();
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+
+                    $query->where('centers.name', 'like', "%$search%")
+                        ->orWhere('centers.taluko', 'like', "%$search%")
+                        ->orWhere('centers.village', 'like', "%$search%");
+
+                });
+            })
+            ->paginate(20)
+            ->appends(['search' => $search]);
 
         return view('admin.center-list', compact('centers'));
     }
@@ -77,7 +99,6 @@ class CenterController extends Controller
             'pin_code' => 'required|digits:6',
             'phone_number' => 'required|digits_between:10,12',
             'email' => 'required|email|max:50',
-            'coordinator_name' => 'required',
         ]);
 
         $updated = DB::table('centers')
@@ -91,13 +112,13 @@ class CenterController extends Controller
                 'pin_code' => $request->pin_code,
                 'phone_number' => $request->phone_number,
                 'email' => $request->email,
-                'coordinator_name' => $request->coordinator_name,
+                'updated_by' => auth()->id(),
                 'updated_at' => now(),
             ]);
 
         if ($updated) {
             return redirect()
-                ->route('center-list')
+                ->route('center.index')
                 ->with('success', 'Center updated successfully!');
         }
 
@@ -128,7 +149,7 @@ class CenterController extends Controller
                 'deleted_at' => now(),
             ]);
 
-        return redirect()->route('center-list')
+        return redirect()->route('center.index')
             ->with('success', 'Center deleted successfully!');
     }
 }

@@ -18,7 +18,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('update-course', $course->id) }}" method="post" class="mt-4">
+                    <form action="{{ route('course.update', $course->id) }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" value="{{ old('name', $course->name) }}"

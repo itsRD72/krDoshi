@@ -20,10 +20,9 @@ return new class extends Migration {
             $table->string('pin_code', 6);
             $table->string('phone_number', 12);
             $table->string('email', 50)->unique();
-            $table->string('coordinator_name',50);
-            $table->foreignId('created_by')->nullable()->constrained('users');
-            $table->foreignId('updated_by')->nullable()->constrained('users');
-            $table->foreignId('deleted_by')->nullable()->constrained('users');
+            $table->unsignedBigInteger('created_by')->nullable()->index();
+            $table->unsignedBigInteger('updated_by')->nullable()->index();
+            $table->unsignedBigInteger('deleted_by')->nullable()->index();
             $table->timestamps();
             $table->softDeletes();
 

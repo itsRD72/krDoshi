@@ -28,12 +28,19 @@
           <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
             <div class="dropdown-header">
               <h4>
-                Loged in As
-                <span class="small text-muted">{{ Auth::user()->name }}</span>
+                Logged in As
+                <span class="small text-muted">
+                  @if(Auth::user()?->role === 'admin')
+                    Admin
+                  @else
+                    {{ Auth::user()?->first_name }} {{ Auth::user()?->last_name }}
+                  @endif
+                  ({{ ucfirst(Auth::user()?->role ?? 'Guest') }})
+                </span>
               </h4>
 
               <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 280px)">
-                <a href="" class="dropdown-item">
+                <a href="{{ route('staff.show', Auth::id()) }}" class="dropdown-item">
                   <i class="ti ti-user"></i>
                   <span>User Profile</span>
                 </a>

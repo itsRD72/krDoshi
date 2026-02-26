@@ -14,11 +14,12 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     @if(session('success'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show">
                             {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form action="{{ route('add-center') }}" method="post" class="mt-4">
+                    <form action="{{ route('center.create') }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Center Name" />
@@ -85,16 +86,6 @@
                             @enderror
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="coordinatorname" name="coordinator_name"
-                                placeholder="Coordinator Name" />
-                            <label for="coordinator_name">Coordinator Name</label>
-                            @error('coordinator_name')
-                                <div class="text-danger">
-                                    {{$message}}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-floating mb-3">
                             <textarea class="form-control" id="address" name="address" placeholder="Address"
                                 style="height: 100px"></textarea>
                             <label for="address">Address</label>
@@ -116,4 +107,3 @@
     </div>
 
 @endsection
-

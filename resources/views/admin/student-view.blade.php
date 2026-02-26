@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <a href="{{ route('student-list-page') }}" class="btn btn-secondary">
+                    <a href="{{ route('student.index') }}" class="btn btn-secondary">
                         Back
                     </a>
                 </div>

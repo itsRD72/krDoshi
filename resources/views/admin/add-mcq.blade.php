@@ -14,14 +14,15 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     @if(session('success'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show">
                             {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form action="{{ route('add-mcq') }}" method="post" class="mt-4">
+                    <form action="{{ route('mcq.store') }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
-                            <select name="course_id" class="form-control">
+                            <select name="course_id" id="course_id" class="form-control">
                                 <option value="">-- Select Course --</option>
                                 @foreach($courses as $course)
                                     <option value="{{ $course->id }}">
@@ -29,7 +30,7 @@
                                     </option>
                                 @endforeach
                             </select>
-
+                            <label for="course_id">Select Course</label>
                             @error('course_id')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -103,4 +104,3 @@
     </div>
 
 @endsection
-

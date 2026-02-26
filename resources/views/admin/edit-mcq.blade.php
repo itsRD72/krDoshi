@@ -18,7 +18,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('update-mcq', $mcq->id) }}" method="post" class="mt-4">
+                    <form action="{{ route('mcq.update', $mcq->id) }}" method="post" class="mt-4">
                         @csrf
                         <div class="form-floating mb-3">
                             <select name="course_id" class="form-control">
