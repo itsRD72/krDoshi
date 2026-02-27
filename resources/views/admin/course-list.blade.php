@@ -95,7 +95,7 @@
             </div>
 
             <!-- PAGINATION -->
-            <div class="d-flex justify-content-center mt-3">
+            <div class="mt-3">
                 {{ $courses->links() }}
             </div>
 

@@ -18,8 +18,15 @@
     <!-- [Mobile Media Block end] -->
     <div class="ms-auto">
       <ul class="list-unstyled">
-
-
+        <li class="pc-h-item">
+          @if(request()->routeIs('mcq.index'))
+            <div class="me-3">
+              <span class="badge bg-secondary">
+               <h4 class="text-light"> Selected MCQ: <span id="selectedCount">0</span></h4>
+              </span>
+            </div>
+          @endif
+        </li>
         <li class="dropdown pc-h-item header-user-profile">
           <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
             role="button" aria-haspopup="false" aria-expanded="false">

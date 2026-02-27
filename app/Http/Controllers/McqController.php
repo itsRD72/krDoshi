@@ -40,10 +40,13 @@ class McqController extends Controller
 
         });
     }
-    public function mcq()
+    public function mcq(Request $request)
     {
         $courses = DB::table('courses')->get();
-        return view('admin.add-mcq', compact('courses'));
+
+        $selectedCourse = session('selected_course');
+
+        return view('admin.add-mcq', compact('courses', 'selectedCourse'));
     }
 
     public function addMcq(Request $request)
@@ -58,6 +61,8 @@ class McqController extends Controller
             'course_id' => 'required|exists:courses,id',
         ]);
 
+        session(['selected_course' => $request->course_id]);
+        
         DB::table('mcqs')->insert([
             'question' => $request->question,
             'option_a' => $request->option_a,
@@ -95,7 +100,7 @@ class McqController extends Controller
                     'mcqs.option_d',
                     'mcqs.correct_option'
                 )
-                ->paginate(50);
+                ->get();
         }
 
         return view('admin.mcq-list', compact('mcqs', 'courses'));

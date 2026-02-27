@@ -99,6 +99,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('edit-mcq/{id}', [McqController::class, 'editMcq'])->name('mcq.edit');
         Route::post('update-mcq/{id}', [McqController::class, 'updateMcq'])->name('mcq.update');
 
+        // To clear mcq routes
+
+        Route::get('clear-course', function () {
+            session()->forget('selected_course');
+            return redirect()->route('mcq.create');
+        })->name('mcq.clearCourse');
+
         // Manage Exam
         Route::post('create-paper', [McqController::class, 'createPaper'])->name('mcq.paper');
     });

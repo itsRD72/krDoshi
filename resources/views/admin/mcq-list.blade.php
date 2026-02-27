@@ -15,7 +15,7 @@
             <!-- COURSE FILTER -->
             <form method="GET" action="{{ route('mcq.index') }}" class="d-flex justify-content-center">
 
-                <select name="course_id" class="form-select w-25" onchange="this.form.submit()">
+                <select name="course_id" class="form-select w-25 mb-1" onchange="this.form.submit()">
 
                     <option value="">Select Course</option>
 
@@ -115,11 +115,6 @@
 
                         </div>
 
-                        <!-- PAGINATION -->
-                        <div class="d-flex justify-content-center mt-3">
-                            {{ $mcqs->links() }}
-                        </div>
-
                         <!-- CREATE PAPER BUTTON -->
                         <div class="d-flex justify-content-end mt-3">
                             <button type="submit" class="btn btn-secondary btn-sm">
@@ -150,19 +145,37 @@
     </div>
 
 @endsection
+@section('scripts')
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
         const selectAll = document.getElementById("selectAll");
         const checkboxes = document.querySelectorAll(".mcqCheckbox");
+        const selectedCount = document.getElementById("selectedCount");
+
+        if (!selectedCount) return; // Stop if not on MCQ page
+
+        function updateCount() {
+            let count = 0;
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) count++;
+            });
+            selectedCount.textContent = count;
+        }
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener("change", updateCount);
+        });
 
         if (selectAll) {
-            selectAll.addEventListener("click", function () {
+            selectAll.addEventListener("change", function () {
                 checkboxes.forEach(function (checkbox) {
                     checkbox.checked = selectAll.checked;
                 });
+                updateCount();
             });
         }
 
     });
 </script>
+@endsection

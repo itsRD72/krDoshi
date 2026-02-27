@@ -21,20 +21,39 @@
                     @endif
                     <form action="{{ route('mcq.store') }}" method="post" class="mt-4">
                         @csrf
-                        <div class="form-floating mb-3">
-                            <select name="course_id" id="course_id" class="form-control">
-                                <option value="">-- Select Course --</option>
-                                @foreach($courses as $course)
-                                    <option value="{{ $course->id }}">
-                                        {{ $course->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <label for="course_id">Select Course</label>
-                            @error('course_id')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        @if(session('selected_course'))
+
+                            @php
+                                $courseName = $courses->where('id', session('selected_course'))->first()->name ?? '';
+                            @endphp
+
+                            <div class="alert alert-info d-flex justify-content-between align-items-center">
+                                <div>
+                                    Adding MCQs for: <strong>{{ $courseName }}</strong>
+                                </div>
+                                <a href="{{ route('mcq.clearCourse') }}" class="btn btn-sm btn-danger">
+                                    Finish Adding
+                                </a>
+                            </div>
+
+                            <input type="hidden" name="course_id" value="{{ session('selected_course') }}">
+
+                        @else
+                            <div class="form-floating mb-3">
+                                <select name="course_id" id="course_id" class="form-control">
+                                    <option value="">-- Select Course --</option>
+                                    @foreach($courses as $course)
+                                        <option value="{{ $course->id }}" {{ (old('course_id', $selectedCourse ?? '') == $course->id) ? 'selected' : '' }}>
+                                            {{ $course->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <label for="course_id">Select Course</label>
+                                @error('course_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        @endif
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="question" name="question" placeholder="Question" />
                             <label for="question">Question</label>

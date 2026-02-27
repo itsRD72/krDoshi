@@ -46,17 +46,21 @@
               <select name="center_id" id="center_id" class="form-select" required
                 @if(auth()->user()->role === 'coordinator') disabled @endif>
                 <option value="">-- Select Center --</option>
-                @foreach ($allCenters as $center )
-                 <option value="{{ $center->id  }}" {{ (auth()->user()->role == 'coordinator' and 
-                 auth()->user()->center_id == $center->id) ? 'selected' : '' }}>{{ $center->name }}</option>
+                @foreach ($allCenters as $center)
+                            <option value="{{ $center->id  }}" {{ (auth()->user()->role == 'coordinator' and
+                  auth()->user()->center_id == $center->id) ? 'selected' : '' }}>{{ $center->name }}</option>
                 @endforeach
               </select>
 
               @if(auth()->user()->role === 'coordinator')
                 <input type="hidden" name="center_id" value="{{ auth()->user()->center_id }}">
               @endif
-
               <label>Select Center</label>
+              @error('center_id')
+                <div class="text-danger">
+                  {{$message}}
+                </div>
+              @enderror
             </div>
             <div class="form-floating mb-3 admin-hide">
               <input type="text" class="form-control" id="first_name" value="{{ old('first_name') }}" name="first_name"
